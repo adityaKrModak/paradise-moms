@@ -1,5 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import mapicon from '@/assets/Map Pin.svg'
 
 const LocationComponent: React.FC = () => {
   const [location, setLocation] = useState<{ latitude: number; longitude: number } | null>(null);
@@ -54,9 +56,9 @@ const LocationComponent: React.FC = () => {
     <div className='bg-[#333333] text-[#B3B3B3] py-1  '>
       {error && <p>{error}</p>}
       {location && (
-        <p>
-          Location: {address}
-        </p>
+        <div className='flex gap-2 ms-12 text-sm'>
+         <Image className='w-[15px]' src={mapicon} alt='mapicon' /> {address}
+        </div>
       )}
     </div>
   );
