@@ -10,7 +10,7 @@ import bag from "@/assets/tote-bag.png";
 function navbar() {
   return (
     <div>
-      <div className="flex items-center justify-around py-3 bg-[#F2F2F2]">
+      <div className="flex items-center justify-around py-3 bg-[#ffff]">
         <Image src={logo} alt="" />
 
         <div className="search">
@@ -24,7 +24,7 @@ function navbar() {
         </div>
       </div>
 
-      <div className="flex ps-[9vw] gap-3 justify-between items-center bg-[#F2F2F2]  ">
+      <div className="flex  ps-[9vw] gap-3 justify-between items-center bg-[#ffff]  ">
         <div className="flex gap-6 justify-between ">
           <Dropdown />
 
