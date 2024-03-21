@@ -7,7 +7,7 @@ import { useState } from "react";
 function Search() {
   const [SearchParam, SetSearchParam] = useState<string>("");
   return (
-    <div className="flex bg-[#ffff]  border-[2px] rounded-md h-[6vh] w-[28vw]">
+    <div className="flex bg-[#ffff]  border-[2px] rounded-md h-[7vh] w-[28vw]">
       <Image className="w-[20px] ms-2 me-1" src={searchIcon} alt="searchicon" />
       <input
         onChange={(e) => {
@@ -17,7 +17,7 @@ function Search() {
         placeholder="Search"
         type="text"
       />
-      <button className="bg-[#00B207] w-[7vw] text-[#F2F2F2] font-semibold text-sm">
+      <button className="bg-[#00B207] w-[7vw] text-[#F2F2F2]  font-semibold text-sm">
         Search
       </button>
     </div>

@@ -1,5 +1,6 @@
+"use client";
 import Image from "next/image";
-import React from "react";
+import React, { use, useState } from "react";
 import logo from "@/utils/Logo.png";
 import phone from "@/utils/PhoneCall 1.svg";
 import like from "@/assets/Heart.svg";
@@ -7,7 +8,13 @@ import Search from "@/components/Search";
 import Dropdown from "@/components/Dropdown";
 import bag from "@/assets/tote-bag.png";
 
-function navbar() {
+function Navbar() {
+  const [selmenu, Setselmenu] = useState<string>("");
+
+  const handleMenuItemm = (menuItem: string) => {
+    Setselmenu(menuItem);
+  };
+
   return (
     <div>
       <div className="flex items-center justify-around py-3 bg-[#ffff]">
@@ -24,14 +31,29 @@ function navbar() {
         </div>
       </div>
 
-      <div className="flex  ps-[9vw] gap-3 justify-between items-center bg-[#ffff]  ">
+      <div className="flex ps-[9vw] pt-2 gap-3 justify-between items-center bg-[#ffff]  ">
         <div className="flex gap-6 justify-between ">
           <Dropdown />
 
-          <div className="flex gap-8 mt-[7px] text-[#808080]">
-            <div>Home</div>
-            <div>Shop</div>
-            <div>About Us</div>
+          <div className="flex gap-8 mt-[7px] font-[500] text-sm text-[#808080]">
+            <div
+              className={selmenu === "Home" ? "text-[#00B207] " : ""}
+              onClick={() => handleMenuItemm("Home")}
+            >
+              Home
+            </div>
+            <div
+              className={selmenu === "Shop" ? "text-[#00B207] " : ""}
+              onClick={() => handleMenuItemm("Shop")}
+            >
+              Shop
+            </div>
+            <div
+              className={selmenu === "About" ? "text-[#00B207] " : ""}
+              onClick={() => handleMenuItemm("About")}
+            >
+              About Us
+            </div>
           </div>
         </div>
 
@@ -40,8 +62,8 @@ function navbar() {
           1234567890
         </div>
       </div>
-    </div>
+    </div>  
   );
 }
 
-export default navbar;
+export default Navbar;

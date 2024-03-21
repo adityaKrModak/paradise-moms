@@ -28,13 +28,13 @@ function Hero() {
                 alt=""
               />
 
-              <div className="flex justify-start absolute top-1/2 left-1/2 transform -translate-x-[33vw] -translate-y-1/2 w-[75vw] ">
+              <div className="flex justify-start absolute top-1/2 left-1/2 transform -translate-x-[33vw] -translate-y-1/2 w-[80vw] ">
                 <Image
                   className="w-[40vw] mr-[5vw]"
                   src={heroProduct}
                   alt="productImage"
                 />
-                <div className="mt-[6vw] flex-col gap-5 items-start justify-start">
+                <div className="mt-[3vw] flex-col gap-5 items-start justify-start">
                   <p className="text-[#00B207] mb-3 text-sm">
                     WELCOME TO PARADISE MOMS{" "}
                   </p>
@@ -49,7 +49,7 @@ function Hero() {
                     </span>
                   </p>
                   <p className="mt-1">We deliver, you enjoy</p>
-                  <button className="bg-[#00B207] py-2 w-[10vw] mt-6 text-white rounded-2xl">
+                  <button className="bg-[#00B207] py-2 w-[11vw] items-center mt-6 text-white rounded-2xl">
                     Shop Now {"->"}{" "}
                   </button>
                 </div>
