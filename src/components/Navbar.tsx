@@ -1,8 +1,8 @@
 "use client";
 import Image from "next/image";
 import React, { use, useState } from "react";
-import logo from "@/utils/Logo.png";
-import phone from "@/utils/PhoneCall 1.svg";
+import logo from "@/assets/Logo.png";
+import phone from "@/assets/PhoneCall 1.svg";
 import like from "@/assets/Heart.svg";
 import Search from "@/components/Search";
 import Dropdown from "@/components/Dropdown";
@@ -62,7 +62,7 @@ function Navbar() {
           1234567890
         </div>
       </div>
-    </div>  
+    </div>
   );
 }
 
