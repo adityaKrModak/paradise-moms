@@ -78,3 +78,6 @@
 body {
   font-family: "Poppins" !important;
 }
+.banner {
+  background-image: url("/src/assets/pickleadd.jpeg") !important;
+}

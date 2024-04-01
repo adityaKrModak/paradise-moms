@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Hero from "@/components/Hero";
-import LocationComponent from "@/components/LocationComponent";
+import Navbar from "@/components/Home/Navbar";
+import Hero from "@/components/Home/Hero";
+import LocationComponent from "@/components/Common/LocationComponent";
+import Features from "@/components/Home/Features";
+import Banners from "@/components/Home/Banners";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -32,9 +34,10 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <LocationComponent />
-        {children}
         <Navbar />
         <Hero />
+        <Features />
+        <Banners />
       </body>
     </html>
   );

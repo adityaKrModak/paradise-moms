@@ -11,7 +11,7 @@ import heroProduct from "@/assets/basket.svg";
 
 function Hero() {
   return (
-    <div className="w-[100vw] h-[70vh] justify-center flex m-auto bg-[#F2F2F2] pt-4">
+    <div className="w-[100%] h-[75vh] justify-center flex m-auto bg-[#ffff] pt-1">
       <Carousel
         plugins={[
           Autoplay({
