@@ -13,7 +13,7 @@ function Features() {
       price: 200,
       rating: 4,
       image:
-        "https://assets.epicurious.com/photos/57b4c375ac22d6f011673ff5/master/pass/quick-pickled-cucumbers.jpg",
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQgbgSs8WxEmyymSLG2pUhIJpsKpqQ11hrcI2KaZt8Kxg&s",
     },
     {
       name: "Carrot Pickle",

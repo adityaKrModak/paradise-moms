@@ -81,3 +81,11 @@ body {
 .banner {
   background-image: url("/src/assets/pickleadd.jpeg") !important;
 }
+td,
+th {
+  padding: 5px 20px !important;
+  cursor: pointer;
+}
+td:hover {
+  color: white !important;
+}

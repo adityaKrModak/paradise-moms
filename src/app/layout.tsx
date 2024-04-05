@@ -6,6 +6,9 @@ import Hero from "@/components/Home/Hero";
 import LocationComponent from "@/components/Common/LocationComponent";
 import Features from "@/components/Home/Features";
 import Banners from "@/components/Home/Banners";
+import Testimonials from "@/components/Home/Testimonials";
+import InstagramPhotos from "@/components/Home/FollowOnInstagram";
+import Footer from "@/components/Common/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -38,6 +41,9 @@ export default function RootLayout({
         <Hero />
         <Features />
         <Banners />
+        <Testimonials />
+        <InstagramPhotos />
+        <Footer />
       </body>
     </html>
   );
