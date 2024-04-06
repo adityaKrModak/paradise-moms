@@ -1,4 +1,5 @@
 "use client";
+import Link from "next/link";
 import Image from "next/image";
 import React, { use, useState } from "react";
 import logo from "@/assets/Logo.png";
@@ -16,7 +17,7 @@ function Navbar() {
   };
 
   return (
-    <div>
+    <div className="hidden md:block">
       <div className="flex items-center justify-around py-3 bg-[#ffff]">
         <Image src={logo} alt="" />
 
@@ -36,22 +37,28 @@ function Navbar() {
           <Dropdown />
 
           <div className="flex gap-8 mt-[7px] font-[500] text-sm text-[#808080]">
-            <div
-              className={
-                selmenu === "Home" ? "text-[#00B207] " : "cursor-pointer"
-              }
-              onClick={() => handleMenuItemm("Home")}
-            >
-              Home
-            </div>
-            <div
-              className={
-                selmenu === "Shop" ? "text-[#00B207] " : "cursor-pointer"
-              }
-              onClick={() => handleMenuItemm("Shop")}
-            >
-              Shop
-            </div>
+            <Link href="/">
+              <div
+                className={
+                  selmenu === "Home" ? "text-[#00B207] " : "cursor-pointer"
+                }
+                onClick={() => handleMenuItemm("Home")}
+              >
+                Home
+              </div>
+            </Link>
+
+            <Link href="/shop">
+              <div
+                className={
+                  selmenu === "Shop" ? "text-[#00B207] " : "cursor-pointer"
+                }
+                onClick={() => handleMenuItemm("Shop")}
+              >
+                Shop
+              </div>
+            </Link>
+
             <div
               className={
                 selmenu === "About" ? "text-[#00B207] " : "cursor-pointer"

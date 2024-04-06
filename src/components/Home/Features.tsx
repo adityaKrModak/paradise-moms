@@ -105,7 +105,7 @@ function Features() {
         ))}
       </div>
 
-      <div className="mt-8 m-auto grid grid-cols-4 items-center w-[67vw] justify-center pb-12">
+      <div className="mt-8 m-auto grid grid-cols-4 w-[800px] pb-12 ">
         {item.map((product, index) => (
           <Productcard key={index} details={product} />
         ))}

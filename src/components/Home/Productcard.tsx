@@ -5,7 +5,7 @@ import rating from "@/assets/Rating.svg";
 
 function Productcard({ details }: any) {
   return (
-    <div className="bg-white flex flex-col items-center p-3 pe-4 w-[200px] h-[230px] border">
+    <div className="bg-white flex flex-col items-center p-3 pe-4 w-[210px] h-[230px] border">
       <img
         className="w-[110px] h-[110px] mt-2"
         src={details.image}

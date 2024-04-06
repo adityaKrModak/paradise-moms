@@ -1,9 +1,17 @@
 import React from "react";
+import Image from "next/image";
+import facebook from "@/assets/social/facebook.svg";
+import twitter from "@/assets/social/twitter.svg";
+import pinterest from "@/assets/social/pinsert.svg";
+import instagram from "@/assets/social/instagram.svg";
+import visa from "@/assets/paymentsIcon/Visa.svg";
+import mastercard from "@/assets/paymentsIcon/Mastercard.svg";
+import securePayments from "@/assets/paymentsIcon/securePayments.svg";
 
 function Footer() {
   return (
-    <div className="text-white">
-      <div className="flex bg-[#173B1A] h-[42vh] mt-[20vh] justify-center gap-20 ">
+    <div className="text-white bg-[#173B1A] pb-5">
+      <div className="flex  h-[35vh] mt-[20vh] justify-center gap-20 ">
         <div className="flex flex-col mt-12">
           <h6 className="font-[500] ">About Paradise Moms</h6>
           <p className="text-[#618062] w-[30vw] text-xs mt-3">
@@ -11,9 +19,9 @@ function Footer() {
             dui, eget bibendum magna congue nec.
           </p>
           <span className="mt-3 text-sm">
-            <span className="border-b-2-grey-500">2264654577</span>
+            <span className="border-b">2264654577</span>
             <span className="text-[#618062]"> or </span>
-            <span>Paradisemoms@gmail.com</span>
+            <span className="border-b">Paradisemoms@gmail.com</span>
           </span>
         </div>
 
@@ -54,6 +62,25 @@ function Footer() {
               </tr>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div className="h-[1px] rounded-lg w-[70vw] bg-[#2B572E] m-auto mt-10"></div>
+      <div className="flex items-center m-auto justify-between w-[80vw] mt-6">
+        <div className="flex gap-2">
+          <Image className="w-[30px]" src={facebook} alt="" />
+          <Image src={twitter} alt="" />
+          <Image src={pinterest} alt="" />
+          <Image src={instagram} alt="" />
+        </div>
+
+        <div className="text-[12px] text-[#618062]">
+          Paradise Moms eCommerce © 2021. All Rights Reserved
+        </div>
+
+        <div className="flex items-center gap-2">
+          <Image className="mt-[6.5px]" src={visa} alt="" />
+          <Image src={mastercard} alt="" />
+          <Image src={securePayments} alt="" />
         </div>
       </div>
     </div>
