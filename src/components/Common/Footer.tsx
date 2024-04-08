@@ -11,10 +11,10 @@ import securePayments from "@/assets/paymentsIcon/securePayments.svg";
 function Footer() {
   return (
     <div className="text-white bg-[#173B1A] pb-5">
-      <div className="flex  h-[35vh] mt-[20vh] justify-center gap-20 ">
-        <div className="flex flex-col mt-12">
+      <div className="flex md:flex-row flex-col h-[35vh] mt-[20vh] justify-center items-center md:items-start md:gap-20 gap-7 ">
+        <div className="flex flex-col md:mt-12 mt-[5vh]">
           <h6 className="font-[500] ">About Paradise Moms</h6>
-          <p className="text-[#618062] w-[30vw] text-xs mt-3">
+          <p className="text-[#618062] md:w-[30vw] w-[326px] text-xs mt-3">
             Morbi cursus porttitor enim lobortis molestie. Duis gravida turpis
             dui, eget bibendum magna congue nec.
           </p>
@@ -26,12 +26,12 @@ function Footer() {
         </div>
 
         <div>
-          <table className=" border-collapse text-[0.7rem] mt-12 text-[#618062]">
-            <tr className="text-white font-[500] text-[16px]">
+          <table className=" border-collapse text-[0.7rem] ms-3 md:ms-1  m-auto md:mt-12 text-[#618062]">
+            <thead className="text-white font-[500] text-[16px]">
               <td>My Account</td>
               <td>Helps</td>
               <td>Proxy</td>
-            </tr>
+            </thead>
             <tbody>
               <tr>
                 <td>My Account</td>
@@ -53,19 +53,15 @@ function Footer() {
               <tr>
                 <td>Wishlist</td>
                 <td>Privacy Policy</td>
-                <td>Products Details</td>
-              </tr>
-              <tr>
-                <td>Settings</td>
-                <td></td>
                 <td>Track Order</td>
               </tr>
+          
             </tbody>
           </table>
         </div>
       </div>
-      <div className="h-[1px] rounded-lg w-[70vw] bg-[#2B572E] m-auto mt-10"></div>
-      <div className="flex items-center m-auto justify-between w-[80vw] mt-6">
+      <div className="h-[1px] rounded-lg w-[70vw] bg-[#2B572E] m-auto mt-[5vh] md:mt-10"></div>
+      <div className="flex md:flex-row flex-col items-center m-auto justify-center md:justify-between gap-3 md:gap-0 w-[80vw] mt-6">
         <div className="flex gap-2">
           <Image className="w-[30px]" src={facebook} alt="" />
           <Image src={twitter} alt="" />
@@ -73,7 +69,7 @@ function Footer() {
           <Image src={instagram} alt="" />
         </div>
 
-        <div className="text-[12px] text-[#618062]">
+        <div className="text-[12px] text-[#618062] w-[350px]">
           Paradise Moms eCommerce © 2021. All Rights Reserved
         </div>
 

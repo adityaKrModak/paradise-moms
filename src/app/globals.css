@@ -1,6 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* @import "../node_modules/@syncfusion/ej2-base/styles/material.css";
+@import "../node_modules/@syncfusion/ej2-react-navigations/styles/material.css"; */
 
 @layer base {
   :root {
@@ -79,7 +81,10 @@ body {
   font-family: "Poppins" !important;
 }
 .banner {
-  background-image: url("/src/assets/pickleadd.jpeg") !important;
+  background-image: url("https://www.ticklingpalates.com/wp-content/uploads/2022/05/mango-pickle.jpg") !important;
+}
+.banner1 {
+  background-image: url("https://media.greenmatters.com/brand-img/vtz_zFRoY/0x0/natural-soap-better-1586197671820.jpg") !important;
 }
 td,
 th {

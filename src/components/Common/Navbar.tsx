@@ -2,7 +2,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import React, { use, useState } from "react";
-import logo from "@/assets/Logo.png";
+import plant from "@/assets/plant.svg";
 import phone from "@/assets/PhoneCall 1.svg";
 import like from "@/assets/Heart.svg";
 import Search from "@/components/Common/Search";
@@ -17,9 +17,13 @@ function Navbar() {
   };
 
   return (
-    <div className="hidden md:block">
+    <div className="hidden md:block fixed top-0 w-full bg-white z-50">
       <div className="flex items-center justify-around py-3 bg-[#ffff]">
-        <Image src={logo} alt="" />
+
+        <div className="flex items-center gap-2">
+        <Image src={plant} alt="" />
+        <div className="text-2xl font-bold">Paradise Moms</div>
+        </div>
 
         <div className="search">
           <Search />
