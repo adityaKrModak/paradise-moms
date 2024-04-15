@@ -11,7 +11,7 @@ import securePayments from "@/assets/paymentsIcon/securePayments.svg";
 function Footer() {
   return (
     <div className="text-white bg-[#173B1A] pb-5">
-      <div className="flex md:flex-row flex-col h-[35vh] mt-[20vh] justify-center items-center md:items-start md:gap-20 gap-7 ">
+      <div className="flex md:flex-row flex-col h-[35vh] justify-center items-center md:items-start md:gap-20 gap-7 ">
         <div className="flex flex-col md:mt-12 mt-[5vh]">
           <h6 className="font-[500] ">About Paradise Moms</h6>
           <p className="text-[#618062] md:w-[30vw] w-[326px] text-xs mt-3">
@@ -28,9 +28,11 @@ function Footer() {
         <div>
           <table className=" border-collapse text-[0.7rem] ms-3 md:ms-1  m-auto md:mt-12 text-[#618062]">
             <thead className="text-white font-[500] text-[16px]">
-              <td>My Account</td>
-              <td>Helps</td>
-              <td>Proxy</td>
+              <tr>
+                <td>My Account</td>
+                <td>Helps</td>
+                <td>Proxy</td>
+              </tr>
             </thead>
             <tbody>
               <tr>
@@ -55,7 +57,6 @@ function Footer() {
                 <td>Privacy Policy</td>
                 <td>Track Order</td>
               </tr>
-          
             </tbody>
           </table>
         </div>

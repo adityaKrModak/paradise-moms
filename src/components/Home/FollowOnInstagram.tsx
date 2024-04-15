@@ -2,7 +2,7 @@ import React from "react";
 
 function FollowonInstagram() {
   return (
-    <div className="bg-white h-[25vw]">
+    <div className="bg-white h-[25vw] mb-10">
       <div className="flex flex-col items-center">
 
       <h2 className="mt-36 md:mt-[42vh] text-2xl font-bold">Follow us on Instagram</h2>

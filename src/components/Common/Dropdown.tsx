@@ -20,7 +20,7 @@ function Dropdown() {
   return (
     <div>
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex pt-1 font-[500] text-sm justify-between items-center outline-none h-[35px] w-[16vw] gap-2 bg-[#00B207] text-[#F2F2F2] px-3">
+        <DropdownMenuTrigger className="flex  font-[500] text-sm justify-between items-center outline-none h-[40px] w-[16vw] gap-2 bg-[#00B207] text-[#F2F2F2] px-3">
           <Image className="w-[23px]" src={menuicon} alt="" />
           {catagory}
           <Image className="w-[20px]" src={downarrow} alt="" />

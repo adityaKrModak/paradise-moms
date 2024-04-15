@@ -5,8 +5,8 @@ import Image from "next/image";
 function Banners() {
   return (
     <div className="">
-      <div className="flex items-center mt-10 justify-center gap-[20px] md:gap-5 pt-5 pb-12 overflow-x-scroll ">
-        <div className="banner flex flex-col justify-center bg-cover items-end  w-[350px] h-[160px] rounded-lg p-5">
+      <div className="flex items-center mt-10 justify-center gap-[20vw] md:gap-5 pt-5 pb-12 overflow-x-auto w-full ">
+        <div className="banner ms-[200vw] md:ms-0 flex-shrink-0 flex flex-col justify-center bg-cover items-end  w-[300px] h-[160px] rounded-lg p-5">
           <p className="text-sm me-[3vw]">PICKLE SALE</p>
           <p className="text-xl font-[700] mt-1 me-8">
             Organic <br />
@@ -16,7 +16,7 @@ function Banners() {
             Shop Now <Image className="w-[13px] mt-[2px]" src={arrow} alt="" />
           </button>
         </div>
-        <div className="banner flex flex-col bg-cover justify-center items-end w-[300px] h-[160px] rounded-lg p-5">
+        <div className="banner flex-shrink-0 flex flex-col bg-cover justify-center items-end w-[300px] h-[160px] rounded-lg p-5">
           <p className="text-sm me-[3vw]">PICKLE SALE</p>
           <p className="text-xl font-[700] mt-1 me-8">
             Organic <br />
@@ -26,7 +26,7 @@ function Banners() {
             Shop Now <Image className="w-[13px] mt-[2px]" src={arrow} alt="" />
           </button>
         </div>
-        <div className="banner1 text-[green] flex bg-cover flex-col justify-center items-end w-[300px] h-[160px] rounded-lg p-5">
+        <div className="banner1 me-[15vw] md:me-0 flex-shrink-0 text-[green] flex bg-cover flex-col justify-center items-end w-[300px] h-[160px] rounded-lg p-5">
           <p className="text-sm me-[3vw]">ORGANIC SOAP</p>
           <p className="text-xl font-[700] mt-1 me-8">
             Organic <br />

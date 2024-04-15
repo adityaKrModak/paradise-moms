@@ -18,7 +18,7 @@ function Search() {
         placeholder="Search"
         type="text"
       />
-      <button className="bg-[#00B207] md:w-[7vw] md:block hidden md:ms-0 ms-[35vw] text-[#F2F2F2] px-3 font-semibold md:text-base text-sm">
+      <button className="bg-[#00B207] translate-x-[1px] h-[6.8vh] -translate-y-[1px] md:w-[8vw] md:block hidden md:ms-0 ms-[35vw] text-[#F2F2F2] px-3 font-[500] md:text-base text-sm">
         Search
       </button>  
     </div>

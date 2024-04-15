@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Common/Navbar";
 import MobileNavbar from "@/components/Common/MobileNavbar";
 import Footer from "@/components/Common/Footer";
+import StoreProvider from "../../redux/StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
@@ -31,8 +32,11 @@ export default function RootLayout({
       </head>
 
       <body className={inter.className}>
+        <StoreProvider>
+          
+       
         <header>
-          <MobileNavbar/>
+          <MobileNavbar />
           <Navbar />
         </header>
         <main>{children}</main>
@@ -40,6 +44,7 @@ export default function RootLayout({
         <footer>
           <Footer />
         </footer>
+        </StoreProvider>
       </body>
     </html>
   );

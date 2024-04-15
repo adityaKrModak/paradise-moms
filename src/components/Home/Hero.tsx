@@ -52,7 +52,7 @@ function Hero() {
                   <p className="mt-1 md:text-lg text-xs">
                     We deliver, you enjoy
                   </p>
-                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[11vw] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
+                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[150px] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
                     Shop Now <Image className="md:w-auto w-[10px]" src={arrow} alt=""/>
                   </button>
                 </div>
@@ -90,7 +90,7 @@ function Hero() {
                   <p className="mt-1 md:text-lg text-xs">
                     We deliver, you enjoy
                   </p>
-                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[11vw] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
+                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[150px] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
                     Shop Now <Image className="md:w-auto w-[10px]" src={arrow} alt=""/>
                   </button>
                 </div>
@@ -128,7 +128,7 @@ function Hero() {
                   <p className="mt-1 md:text-lg text-xs">
                     We deliver, you enjoy
                   </p>
-                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[11vw] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
+                  <button className="bg-[#00B207] justify-center md:gap-4 gap-2 flex py-2 md:w-[150px] md:text-lg text-[8px] px-3 items-center mt-6 text-white rounded-2xl">
                     Shop Now <Image className="md:w-auto w-[10px]" src={arrow} alt=""/>
                   </button>
                 </div>

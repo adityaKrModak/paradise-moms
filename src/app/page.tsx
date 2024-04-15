@@ -6,7 +6,7 @@ import Banners from "@/components/Home/Banners";
 import Testimonials from "@/components/Home/Testimonials";
 import InstagramPhotos from "@/components/Home/FollowOnInstagram";
 
-export default function Home() {
+export default function Home() { 
   return (
     <>
       <Hero />

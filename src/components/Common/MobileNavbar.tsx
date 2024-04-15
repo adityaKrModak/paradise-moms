@@ -9,7 +9,8 @@ import bag from "@/assets/tote-bag.png";
 import Search from "@/components/Common/Search";
 import cross from "@/assets/Icons/close.png";
 import vegies from "@/assets/vegies.svg";
-import veggies2 from "@/assets/veggies2.svg";
+import Navlinks from "./Navlinks";
+import Link from "next/link";
 
 function MobileNavbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -44,7 +45,9 @@ function MobileNavbar() {
           <div className="flex items-center gap-3 me-4">
             <Image className="w-[30px]" src={like} alt="" />
             <div className="w-[1.5px]  h-[22px] bg-slate-400"></div>
-            <Image className="w-[34px] mb-[4px]" src={bag} alt="bag" />
+            <Link href="/shoppingCart">
+              <Image className="w-[34px] mb-[4px]" src={bag} alt="bag" />
+            </Link>
           </div>
         </div>
 
@@ -74,9 +77,7 @@ function MobileNavbar() {
             </div>
             <hr className="h-1" />
             <div className="flex flex-col mt-4 gap-2">
-              <p>Home</p>
-              <p>Shop</p>
-              <p>About Us</p>
+              <Navlinks />
             </div>
             <Image
               className="translate-y-[50vh] -translate-x-[3vw]"
