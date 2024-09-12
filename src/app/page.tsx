@@ -1,6 +1,5 @@
-import Navbar from "@/components/Common/Navbar";
+
 import Hero from "@/components/Home/Hero";
-import LocationComponent from "@/components/Common/LocationComponent";
 import Features from "@/components/Home/Features";
 import Banners from "@/components/Home/Banners";
 import Testimonials from "@/components/Home/Testimonials";

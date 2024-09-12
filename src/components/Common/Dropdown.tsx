@@ -25,7 +25,7 @@ function Dropdown() {
           {catagory}
           <Image className="w-[20px]" src={downarrow} alt="" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="w-[16vw] z-50">
           <DropdownMenuLabel>Different Catagories</DropdownMenuLabel>
           <DropdownMenuSeparator />
 

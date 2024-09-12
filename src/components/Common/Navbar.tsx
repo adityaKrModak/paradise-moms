@@ -1,13 +1,17 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import plant from "@/assets/plant.svg";
 import phone from "@/assets/PhoneCall 1.svg";
-import like from "@/assets/Heart.svg";
+import user from "@/assets/Icons/user.svg";
 import Search from "@/components/Common/Search";
 import Dropdown from "@/components/Common/Dropdown";
 import bag from "@/assets/tote-bag.png";
 import Navlinks from "./Navlinks";
+import { useSelector } from "react-redux";
 function Navbar() {
+  const itemsLength = useSelector((state: any) => state.cart.items.length);
+  const shouldRenderDiv = itemsLength > 0;
   return (
     <div className="hidden md:block fixed top-0 w-full bg-white z-50">
       <div className="flex items-center justify-around py-3 bg-[#ffff]">
@@ -21,11 +25,18 @@ function Navbar() {
         </div>
 
         <div className="flex items-center gap-3 mr-11">
-          <Image className="w-[30px]" src={like} alt="" />
+          <Link href="/loginlogout">
+            <Image className="w-[30px]" src={user} alt="" />
+          </Link>
           <div className="w-[1.5px]  h-[22px] bg-slate-300"></div>
           <Link href="/shoppingCart">
             <Image className="w-[34px] mb-[4px]" src={bag} alt="bag" />
           </Link>
+          {shouldRenderDiv && (
+            <div className="overlay-elementpc">
+              <p>{itemsLength}</p>
+            </div>
+          )}
         </div>
       </div>
 

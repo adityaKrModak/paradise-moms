@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import Productcard from "../Common/Productcard";
+import Productcard from "../Common/ProductCard";
 import product from "@/data";
 function Features() {
   const [selectedItem, setselectedItem] = useState<string>("All");
@@ -21,15 +21,19 @@ function Features() {
   };
 
   return (
-    <div className="flex-col text-center bg-[#F2F2F2] md:pt-5 w-[100%] pt-8 ">
-      <h2 className="font-semibold md:text-2xl text-lg">Introducing Our Products</h2>
+    <div className="flex-col bg-[#F2F2F2] md:pt-5 w-[100%] pt-8 ">
+      <h2 className="font-semibold text-center md:text-2xl text-lg">
+        Introducing Our Products
+      </h2>
 
       <div className="flex justify-center items-center gap-3 w-25 text-[#808080]">
         <div className="mt-6 flex gap-3 items-center">
           <div
             onClick={() => handleselectedItem("All")}
             className={
-              selectedItem === "All" ? "text-[#00B207] md:text-base text-sm" : "cursor-pointer md:text-base text-sm"
+              selectedItem === "All"
+                ? "text-[#00B207] md:text-base text-sm"
+                : "cursor-pointer md:text-base text-sm"
             }
           >
             All
@@ -42,7 +46,9 @@ function Features() {
             <div
               onClick={() => handleselectedItem(item)}
               className={
-                selectedItem === item ? "text-[#00B207] md:text-base text-sm" : "cursor-pointer text-sm"
+                selectedItem === item
+                  ? "text-[#00B207] md:text-base text-sm"
+                  : "cursor-pointer text-sm"
               }
             >
               {item}
@@ -51,9 +57,9 @@ function Features() {
         ))}
       </div>
 
-      <div className="mt-12  md:mt-8 md:m-auto ms-2 me-2 md:gap-3 gap-3 grid grid-cols-2 md:grid-cols-4 md:w-[880px] pb-12">
+      <div className="mt-12  md:mt-8 md:m-auto ms-2 me-2 justify-center  flex flex-wrap md:gap-8 pb-12">
         {item.map((product, index) => (
-          <Productcard key={index} details={product} />
+          <Productcard key={index} />
         ))}
       </div>
     </div>

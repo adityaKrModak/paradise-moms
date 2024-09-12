@@ -4,15 +4,18 @@ import React from "react";
 import Image from "next/image";
 import burgerIcon from "@/assets/burger icon.svg";
 import plant from "@/assets/plant.svg";
-import like from "@/assets/Heart.svg";
+import user from "@/assets/Icons/user.svg";
 import bag from "@/assets/tote-bag.png";
 import Search from "@/components/Common/Search";
 import cross from "@/assets/Icons/close.png";
 import vegies from "@/assets/vegies.svg";
 import Navlinks from "./Navlinks";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 function MobileNavbar() {
+  const itemsLength = useSelector((state: any) => state.cart.items.length);
+  const shouldRenderDiv = itemsLength > 0;
   const [isOpen, setIsOpen] = useState(false);
   const [showContent, setShowContent] = useState(false);
 
@@ -43,11 +46,19 @@ function MobileNavbar() {
           </div>
 
           <div className="flex items-center gap-3 me-4">
-            <Image className="w-[30px]" src={like} alt="" />
+            <Link href="/loginlogout">
+              <Image className="w-[30px]" src={user} alt="" />
+            </Link>
+
             <div className="w-[1.5px]  h-[22px] bg-slate-400"></div>
             <Link href="/shoppingCart">
-              <Image className="w-[34px] mb-[4px]" src={bag} alt="bag" />
+              <Image className="w-[34px] mb-[7px]" src={bag} alt="bag" />
             </Link>
+            {shouldRenderDiv && (
+              <div className="overlay-element">
+                <p>{itemsLength}</p>
+              </div>
+            )}
           </div>
         </div>
 
