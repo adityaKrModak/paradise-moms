@@ -1,36 +1,45 @@
 "use client";
-import React from "react";
-import { useDispatch } from "react-redux";
-import { loginSuccess } from "../../../redux/slices/authSlice";
-import { logoutSuccess } from "../../../redux/slices/authSlice";
+import React,{useEffect} from "react";
 import google from "@/assets/Icons/google.png";
 import Image from "next/image";
+import { loginSignup } from "../api/auth/callback/google";
+import { useRouter } from 'next/router';
 
 
 function page() {
-  const dispatch = useDispatch();
+ 
 
-  const handleLogin = (e: any) => {
-    e.preventDefault();
-    const user = { userid: "akljakf123", password: "dsfsad" };
-    // Call your authentication API and dispatch loginSuccess action on successful login
-    dispatch(loginSuccess(user));
-  };
+
   const handleLogout = () => {
-    // Dispatch logoutSuccess action on logout
-    dispatch(logoutSuccess());
+   
+  };
+  const AuthCallback = () => {
+    const router = useRouter();
+    useEffect(() => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      if (token) {
+        // Store token in localStorage or state management solution
+        localStorage.setItem('accessToken', token);
+        // Redirect to dashboard or home page
+        router.push('/');
+      }
+    }, [router]);
+    return <div>Loading...</div>;
+};
+  const handleLoginSignup = async () => {
+    await loginSignup();
   };
   return (
     <div className="mt-[28vh] flex mb-12 justify-center items-center">
-      <form
-        onSubmit={handleLogin}
+      <div
         className="m-auto border h-[200px] w-[300px] flex justify-center items-center rounded-sm shadow-md"
       >
-        <button type="submit" className="bg-[#00B207] gap-3 flex items-center justify-center  rounded-[8px] text-white py-2 px-8 ">
+        <button onClick={handleLoginSignup} className="bg-[#00B207] gap-3 flex items-center justify-center  rounded-[8px] text-white py-2 px-8 ">
           <Image className="w-[20px]" src={google} alt="" />
           Sign up with Google
         </button>
-      </form>
+      </div>
       {/* <button onClick={handleLogout}>Logout</button> */}
      
     </div>
@@ -38,3 +47,4 @@ function page() {
 }
 
 export default page;
+
