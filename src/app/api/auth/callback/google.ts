@@ -4,7 +4,7 @@ const Url = process.env.NEXT_PUBLIC_BASE_URL;
 
 const loginSignup = async () => {
     try {
-        window.open(`${Url}/auth/google`);
+        window.location.href = (`${Url}/auth/google`);
         
     } catch (error) {
         console.log(error);
