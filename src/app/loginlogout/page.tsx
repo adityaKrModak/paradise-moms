@@ -9,6 +9,7 @@ import { Card } from '@/components/ui/card'
 import { loginSignup } from '@/app/api/auth/callback/google'
 import googleIcon from '@/assets/Icons/google.png'
 
+
 export default function AuthPage() {
   const router = useRouter()
 
