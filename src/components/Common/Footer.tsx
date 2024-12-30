@@ -10,7 +10,7 @@ import securePayments from "@/assets/paymentsIcon/securePayments.svg";
 
 function Footer() {
   return (
-    <div className="text-white bg-[#173B1A] pb-5">
+    <section className="text-white bg-[#173B1A] py-4">
       <div className="flex md:flex-row flex-col h-[35vh] justify-center items-center md:items-start md:gap-20 gap-7 ">
         <div className="flex flex-col md:mt-12 mt-[5vh]">
           <h6 className="font-[500] ">About Paradise Moms</h6>
@@ -80,7 +80,7 @@ function Footer() {
           <Image src={securePayments} alt="" />
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

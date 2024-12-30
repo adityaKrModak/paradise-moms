@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Common/Navbar";
-import MobileNavbar from "@/components/Common/MobileNavbar";
-import Footer from "@/components/Common/Footer";
+import Navbar from "@/components/common/Navbar";
+import MobileNavbar from "@/components/common/MobileNavbar";
+import Footer from "@/components/common/Footer";
 import StoreProvider from "../../redux/StoreProvider";
 import { ApolloProviders } from "./providers";
 
@@ -35,15 +35,18 @@ export default function RootLayout({
       <body className={inter.className}>
       <ApolloProviders>
         <StoreProvider>
+        <div className="flex flex-col min-h-screen">
         <header>
           <MobileNavbar />
           <Navbar />
         </header>
-        <main>{children}</main>
+
+        <main className="flex-grow">{children}</main>
 
         <footer>
           <Footer />
         </footer>
+        </div>
         </StoreProvider>
         </ApolloProviders>
         

@@ -1,9 +1,9 @@
 
-import Hero from "@/components/Home/Hero";
-import Features from "@/components/Home/Features";
-import Banners from "@/components/Home/Banners";
-import Testimonials from "@/components/Home/Testimonials";
-import InstagramPhotos from "@/components/Home/FollowOnInstagram";
+import Hero from "@/components/home/Hero";
+import Features from "@/components/home/Features";
+import Banners from "@/components/home/Banners";
+import Testimonials from "@/components/home/Testimonials";
+import InstagramPhotos from "@/components/home/FollowOnInstagram";
 
 export default function Home() { 
   return (

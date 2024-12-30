@@ -1,0 +1,19 @@
+'use client'
+import React from 'react'
+import BillingForm from '@/components/checkout/BillingForm'
+import OrderSummary from '@/components/checkout/OrderSummary'
+
+function page() {
+  return (
+    <section className="w-full bg-[#F8FAF7] md:pt-[25vh] md:pb-[10vh]">
+        
+        <section className='container flex flex-col md:flex-row md:gap-32 justify-end'>
+
+      <BillingForm />
+      <OrderSummary />
+        </section>
+    </section>
+  )
+}
+
+export default page

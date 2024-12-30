@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
-import Productcard from "../Common/ProductCard";
+import Productcard from "../common/ProductCard";
 import product from "@/data";
 function Features() {
   const [selectedItem, setselectedItem] = useState<string>("All");

@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/button"
 import plant from "@/assets/plant.svg";
 import phone from "@/assets/PhoneCall 1.svg";
 import user from "@/assets/Icons/user.svg";
-import Search from "@/components/Common/Search";
-import Dropdown from "@/components/Common/Dropdown";
+import Search from "@/components/common/Search";
+import Dropdown from "@/components/common/Dropdown";
 import bag from "@/assets/tote-bag.png";
 import Navlinks from "./Navlinks";
 import {
@@ -46,7 +46,7 @@ function Navbar() {
   };
 
   return (
-    <div className="hidden md:block fixed top-0 w-full bg-white z-50">
+    <nav className="hidden md:block fixed top-0 w-full bg-white z-50">
       <div className="flex items-center justify-around py-3 bg-[#ffff]">
         <div className="flex items-center gap-2">
           <Image src={plant} alt="" />
@@ -97,7 +97,7 @@ function Navbar() {
       )}
          
           <div className="w-[1.5px]  h-[22px] bg-slate-300"></div>
-          <Link href="/shoppingCart">
+          <Link href="/shopCart">
             <Image className="w-[34px] mb-[4px]" src={bag} alt="bag" />
           </Link>
           {shouldRenderDiv && (
@@ -120,7 +120,7 @@ function Navbar() {
           &nbsp;1234567890
         </div>
       </div>
-    </div>
+    </nav>
   );
 }
 

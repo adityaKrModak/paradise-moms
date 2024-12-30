@@ -4,7 +4,9 @@ import rootReducer from "./rootReducer";
 
 const store = configureStore({
   reducer: rootReducer,
-  // Optionally, configure middleware, dev tools, etc.
 });
+
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
 
 export default store;

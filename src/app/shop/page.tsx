@@ -1,10 +1,10 @@
 "use client";
 import Image from "next/image";
 import shopBanner from "@/assets/shapBanner.svg";
-import Categoryfilters from "@/components/Shop/Categoryfilters";
-import Pricefilter from "@/components/Shop/Pricefilter";
-import Ratingfilter from "@/components/Shop/Ratingfilter";
-import ProductCard from "@/components/Common/ProductCard";
+import Categoryfilters from "@/components/shop/Categoryfilters";
+import Pricefilter from "@/components/shop/Pricefilter";
+import Ratingfilter from "@/components/shop/Ratingfilter";
+import ProductCard from "@/components/common/ProductCard";
 // import product from "@/data";
 import { useGetProductsQuery } from '@/graphql/generated/graphql';
 

@@ -6,7 +6,7 @@ import burgerIcon from "@/assets/burger icon.svg";
 import plant from "@/assets/plant.svg";
 import user from "@/assets/Icons/user.svg";
 import bag from "@/assets/tote-bag.png";
-import Search from "@/components/Common/Search";
+import Search from "@/components/common/Search";
 import cross from "@/assets/Icons/close.png";
 import vegies from "@/assets/vegies.svg";
 import Navlinks from "./Navlinks";
