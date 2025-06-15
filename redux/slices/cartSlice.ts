@@ -1,21 +1,15 @@
-
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { GetProductsQuery } from "@/graphql/generated/graphql";
 
-export interface CartItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
+type Product = GetProductsQuery["products"][0];
+export type CartItem = Product & { quantity: number };
 
 interface CartState {
   items: CartItem[];
-  // total: number;
 }
 
 const initialState: CartState = {
   items: [],
-  // total: 0,
 };
 
 const cartSlice = createSlice({
@@ -31,19 +25,21 @@ const cartSlice = createSlice({
         state.items.push(newItem);
       }
     },
-    removeItem(state, action: PayloadAction<string>) {
-      const removeItemId = action.payload;
-      const itemIndex = state.items.findIndex((item)=> item.id === removeItemId);
-      // find index -> return 'true' if match found or '-1' if not found
-
-      if(itemIndex !== -1){
-        state.items.splice(itemIndex,1);
-      }
-
+    removeItem(state, action: PayloadAction<number>) {
+      state.items = state.items.filter((item) => item.id !== action.payload);
     },
-    
+    updateItemQuantity(
+      state,
+      action: PayloadAction<{ id: number; quantity: number }>
+    ) {
+      const { id, quantity } = action.payload;
+      const itemToUpdate = state.items.find((item) => item.id === id);
+      if (itemToUpdate) {
+        itemToUpdate.quantity = quantity;
+      }
+    },
   },
 });
 
-export const { addItem, removeItem } = cartSlice.actions;
+export const { addItem, removeItem, updateItemQuantity } = cartSlice.actions;
 export default cartSlice.reducer;
