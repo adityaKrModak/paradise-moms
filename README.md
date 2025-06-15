@@ -1,24 +1,84 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Paradise Moms
+
+Welcome to Paradise Moms, your go-to destination for natural and organic products. This project is a Next.js application built with TypeScript, Redux for state management, and GraphQL with Apollo Client for data fetching.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Running the Application](#running-the-application)
+- [Project Structure](#project-structure)
+- [Key Features](#key-features)
+- [Technologies Used](#technologies-used)
 
 ## Getting Started
 
-First, run the development server:
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
+
+### Prerequisites
+
+- Node.js (v14 or later)
+- npm or yarn
+
+### Installation
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/paradise-moms.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd paradise-moms
+   ```
+3. Install the dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+## Running the Application
+
+To run the application in development mode, use the following command:
 
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+The project follows a standard Next.js `src` directory structure, with key folders organized as follows:
+
+- `src/app`: Contains all the pages and routes for the application.
+- `src/components`: Reusable components, organized by feature.
+- `src/graphql`: GraphQL queries, mutations, and generated types.
+- `src/hooks`: Custom React hooks, such as `useAuth`.
+- `src/lib`: Library configurations, including the Apollo Client setup.
+- `src/redux`: Redux store setup, including slices, selectors, and the root reducer.
+- `src/types`: TypeScript type definitions for shared data structures.
+
+## Key Features
+
+- **Authentication**: Secure user authentication with Google Sign-In, managed through Redux.
+- **Shopping Cart**: Fully functional shopping cart with Redux for state management.
+- **Product Listings**: Dynamic product listings fetched from a GraphQL API.
+- **Checkout Process**: Streamlined checkout process with an order summary.
+- **Responsive Design**: A responsive user interface built with Tailwind CSS.
+
+## Technologies Used
+
+- [Next.js](https://nextjs.org/) - React framework for server-side rendering and static site generation.
+- [TypeScript](https://www.typescriptlang.org/) - Typed superset of JavaScript.
+- [Redux](https://redux.js.org/) - State management library.
+- [GraphQL](https://graphql.org/) - Query language for APIs.
+- [Apollo Client](https://www.apollographql.com/docs/react/) - GraphQL client for React.
+- [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework.
+- [shadcn/ui](https://ui.shadcn.com/) - Re-usable components built using Radix UI and Tailwind CSS.
 
 ## Learn More
 
