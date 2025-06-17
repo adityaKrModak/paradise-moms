@@ -47,7 +47,7 @@ export default function CustomersPage() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  //   const [password, setPassword] = useState("");
   const [role, setRole] = useState<UserRole>(UserRole.User);
 
   // Edit state
@@ -70,7 +70,7 @@ export default function CustomersPage() {
     setFirstName("");
     setLastName("");
     setEmail("");
-    setPassword("");
+    // setPassword("");
     setRole(UserRole.User);
     setIsEditing(false);
     setEditingUserId(null);
@@ -102,7 +102,7 @@ export default function CustomersPage() {
         firstName,
         lastName,
         email,
-        role,
+        // role,
       };
 
       if (isEditing && editingUserId) {
@@ -224,7 +224,7 @@ export default function CustomersPage() {
                     required
                   />
                 </div>
-                {!isEditing && (
+                {/* {!isEditing && (
                   <div className="space-y-2">
                     <Label htmlFor="password">Password *</Label>
                     <Input
@@ -235,10 +235,11 @@ export default function CustomersPage() {
                       required
                     />
                   </div>
-                )}
+                )} */}
                 <div className="space-y-2">
                   <Label htmlFor="role">Role</Label>
                   <Select
+                    disabled
                     value={role}
                     onValueChange={(value) => setRole(value as UserRole)}
                   >
@@ -251,16 +252,35 @@ export default function CustomersPage() {
                     </SelectContent>
                   </Select>
                 </div>
+                {/* Submit */}
                 <div className="flex gap-3 pt-4">
-                  <Button type="submit" disabled={isLoading}>
+                  <Button
+                    type="submit"
+                    disabled={isLoading}
+                    className="bg-green-600 hover:bg-green-700 text-white"
+                  >
                     {isLoading ? (
-                      <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                    ) : isEditing ? (
-                      <Save className="h-4 w-4 mr-2" />
+                      <>
+                        <Loader2 className="animate-spin h-4 w-4 mr-2" />
+                        {isEditing
+                          ? "Updating Customer..."
+                          : "Adding Customer..."}
+                      </>
                     ) : (
-                      <Plus className="h-4 w-4 mr-2" />
+                      <>
+                        {isEditing ? (
+                          <>
+                            <Save className="h-4 w-4 mr-2" />
+                            Update Customer
+                          </>
+                        ) : (
+                          <>
+                            <Plus className="h-4 w-4 mr-2" />
+                            Add Customer
+                          </>
+                        )}
+                      </>
                     )}
-                    {isEditing ? "Update Customer" : "Add Customer"}
                   </Button>
                   {isEditing && (
                     <Button
@@ -268,6 +288,7 @@ export default function CustomersPage() {
                       variant="outline"
                       onClick={handleCancelEdit}
                       disabled={isLoading}
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
                     >
                       Cancel
                     </Button>

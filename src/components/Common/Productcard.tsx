@@ -2,15 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
-import { Star, ShoppingCart, Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "@/redux/slices/cartSlice";
-import AddToBag from "@/assets/Addt to Card.svg";
-import AddToCartGreen from "@/assets/Icons/AddToCartGreen.svg";
-import Rating from "@/assets/Rating.svg";
 import { GetProductsQuery } from "@/graphql/generated/graphql";
 import { RootState } from "@/redux/rootReducer";
 
