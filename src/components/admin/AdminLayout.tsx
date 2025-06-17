@@ -39,9 +39,9 @@ const sidebarItems = [
     icon: FolderTree,
   },
   {
-    title: "Reviews",
-    href: "/admin/reviews",
-    icon: Star,
+    title: "Customers",
+    href: "/admin/customers",
+    icon: Users,
   },
   {
     title: "Orders",
@@ -49,9 +49,9 @@ const sidebarItems = [
     icon: ShoppingCart,
   },
   {
-    title: "Customers",
-    href: "/admin/customers",
-    icon: Users,
+    title: "Reviews",
+    href: "/admin/reviews",
+    icon: Star,
   },
   {
     title: "Analytics",

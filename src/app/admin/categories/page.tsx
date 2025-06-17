@@ -5,6 +5,7 @@ import {
   useGetCategoriesQuery,
   useCreateCategoryMutation,
   useRemoveCategoryMutation,
+  useUpdateCategoryMutation,
   GetCategoriesDocument,
 } from "@/graphql/generated/graphql";
 
@@ -14,11 +15,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, FolderTree, Edit, Trash2, Loader2 } from "lucide-react";
+import { Plus, FolderTree, Edit, Trash2, Loader2, Save } from "lucide-react";
 
 export default function CategoriesPage() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
+  const [editingCategoryId, setEditingCategoryId] = useState<number | null>(
+    null
+  );
+  const [activeTab, setActiveTab] = useState("manage");
 
   const {
     data: categoriesData,
@@ -36,6 +42,35 @@ export default function CategoriesPage() {
       refetchQueries: [{ query: GetCategoriesDocument }],
     });
 
+  const [updateCategory, { loading: updateLoading, error: updateError }] =
+    useUpdateCategoryMutation({
+      refetchQueries: [{ query: GetCategoriesDocument }],
+    });
+
+  const resetForm = () => {
+    setName("");
+    setDescription("");
+    setIsEditing(false);
+    setEditingCategoryId(null);
+  };
+
+  const handleEditClick = (category: {
+    id: number;
+    name: string;
+    description?: string | null;
+  }) => {
+    setIsEditing(true);
+    setEditingCategoryId(category.id);
+    setName(category.name);
+    setDescription(category.description || "");
+    setActiveTab("add");
+  };
+
+  const handleCancelEdit = () => {
+    resetForm();
+    setActiveTab("manage");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name) {
@@ -43,25 +78,42 @@ export default function CategoriesPage() {
       return;
     }
     try {
-      const response = await createCategory({
-        variables: {
-          createCategoryInput: {
-            name,
-            description,
+      if (isEditing && editingCategoryId) {
+        await updateCategory({
+          variables: {
+            updateCategoryInput: {
+              id: editingCategoryId,
+              name,
+              description,
+            },
           },
-        },
-      });
-      if (response.data?.createCategory) {
+        });
+        alert("Category updated successfully!");
+      } else {
+        await createCategory({
+          variables: {
+            createCategoryInput: {
+              name,
+              description,
+            },
+          },
+        });
         alert("Category created successfully!");
-        setName("");
-        setDescription("");
       }
+      resetForm();
+      setActiveTab("manage");
     } catch (err) {
-      console.error("Failed to create category:", err);
+      console.error(
+        `Failed to ${isEditing ? "update" : "create"} category:`,
+        err
+      );
       const errorMessage =
+        updateError?.message ||
         createError?.message ||
         (err instanceof Error ? err.message : "An unknown error occurred");
-      alert(`Error creating category: ${errorMessage}`);
+      alert(
+        `Error ${isEditing ? "updating" : "creating"} category: ${errorMessage}`
+      );
     }
   };
 
@@ -96,11 +148,16 @@ export default function CategoriesPage() {
         </div>
       </div>
 
-      <Tabs defaultValue="manage" className="space-y-6">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="space-y-6"
+      >
         <TabsList className="bg-green-50">
           <TabsTrigger
             value="manage"
             className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+            disabled={isEditing}
           >
             <FolderTree className="h-4 w-4 mr-2" />
             Manage Categories
@@ -109,8 +166,12 @@ export default function CategoriesPage() {
             value="add"
             className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
           >
-            <Plus className="h-4 w-4 mr-2" />
-            Add Category
+            {isEditing ? (
+              <Edit className="h-4 w-4 mr-2" />
+            ) : (
+              <Plus className="h-4 w-4 mr-2" />
+            )}
+            {isEditing ? "Edit Category" : "Add Category"}
           </TabsTrigger>
         </TabsList>
 
@@ -118,8 +179,12 @@ export default function CategoriesPage() {
           <Card className="border-green-100">
             <CardHeader>
               <CardTitle className="text-green-800 flex items-center gap-2">
-                <Plus className="h-5 w-5" />
-                Add New Category
+                {isEditing ? (
+                  <Edit className="h-5 w-5" />
+                ) : (
+                  <Plus className="h-5 w-5" />
+                )}
+                {isEditing ? "Edit Category" : "Add New Category"}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -160,21 +225,35 @@ export default function CategoriesPage() {
                 <div className="flex gap-3 pt-4">
                   <Button
                     type="submit"
-                    disabled={createLoading}
+                    disabled={createLoading || updateLoading}
                     className="bg-green-600 hover:bg-green-700 text-white"
                   >
-                    {createLoading ? (
+                    {createLoading || updateLoading ? (
                       <>
                         <Loader2 className="animate-spin h-4 w-4 mr-2" />
-                        Adding Category...
+                        {isEditing ? "Updating..." : "Adding..."}
                       </>
                     ) : (
                       <>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Add Category
+                        {isEditing ? (
+                          <Save className="h-4 w-4 mr-2" />
+                        ) : (
+                          <Plus className="h-4 w-4 mr-2" />
+                        )}
+                        {isEditing ? "Update Category" : "Add Category"}
                       </>
                     )}
                   </Button>
+                  {isEditing && (
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={handleCancelEdit}
+                      disabled={createLoading || updateLoading}
+                    >
+                      Cancel
+                    </Button>
+                  )}
                 </div>
               </form>
             </CardContent>
@@ -217,6 +296,7 @@ export default function CategoriesPage() {
                               variant="ghost"
                               size="icon"
                               className="h-8 w-8 text-green-600 hover:bg-green-50"
+                              onClick={() => handleEditClick(category)}
                             >
                               <Edit className="h-4 w-4" />
                             </Button>

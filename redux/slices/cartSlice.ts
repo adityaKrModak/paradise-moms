@@ -8,9 +8,35 @@ interface CartState {
   items: CartItem[];
 }
 
-const initialState: CartState = {
-  items: [],
+const loadState = (): CartState => {
+  if (typeof window === "undefined") {
+    return { items: [] };
+  }
+  try {
+    const serializedState = localStorage.getItem("cart");
+    if (serializedState === null) {
+      return { items: [] };
+    }
+    const parsedState = JSON.parse(serializedState);
+    return { items: parsedState.items || [] };
+  } catch (err) {
+    return { items: [] };
+  }
 };
+
+const saveState = (state: CartState) => {
+  if (typeof window === "undefined") {
+    return;
+  }
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem("cart", serializedState);
+  } catch (err) {
+    // Ignore write errors
+  }
+};
+
+const initialState: CartState = loadState();
 
 const cartSlice = createSlice({
   name: "cart",
@@ -24,9 +50,11 @@ const cartSlice = createSlice({
       } else {
         state.items.push(newItem);
       }
+      saveState(state);
     },
     removeItem(state, action: PayloadAction<number>) {
       state.items = state.items.filter((item) => item.id !== action.payload);
+      saveState(state);
     },
     updateItemQuantity(
       state,
@@ -37,6 +65,7 @@ const cartSlice = createSlice({
       if (itemToUpdate) {
         itemToUpdate.quantity = quantity;
       }
+      saveState(state);
     },
   },
 });

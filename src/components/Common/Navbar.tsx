@@ -44,6 +44,9 @@ import { Input } from "@/components/ui/input";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useApolloClient } from "@apollo/client";
+import dynamic from "next/dynamic";
+
+const CartBadge = dynamic(() => import("./CartBadge"), { ssr: false });
 
 const navigationLinks = [
   { href: "/products", label: "All Products" },
@@ -64,9 +67,6 @@ function Navbar() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth();
-  const cartItemCount = useSelector(
-    (state: RootState) => state.cart.items.length
-  );
   const [isOpen, setIsOpen] = useState(false);
   const client = useApolloClient();
 
@@ -266,11 +266,7 @@ function Navbar() {
                   <Image src={toteBag} alt="Cart" width={24} height={24} />
                 </Button>
               </Link>
-              {cartItemCount > 0 && (
-                <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                  {cartItemCount > 9 ? "9+" : cartItemCount}
-                </span>
-              )}
+              <CartBadge />
             </div>
           </div>
         </div>
@@ -402,11 +398,7 @@ function Navbar() {
                       <Image src={toteBag} alt="Cart" width={28} height={28} />
                     </Button>
                   </Link>
-                  {cartItemCount > 0 && (
-                    <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white">
-                      {cartItemCount > 9 ? "9+" : cartItemCount}
-                    </span>
-                  )}
+                  <CartBadge />
                 </div>
               </div>
             </div>
