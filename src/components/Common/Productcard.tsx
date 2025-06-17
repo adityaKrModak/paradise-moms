@@ -56,7 +56,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </p>
         <div className="flex items-center">
           <span className="text-lg font-bold text-green-600">
-            ₹{product.price}
+            ₹{product.price / 100}
           </span>
         </div>
       </CardContent>
