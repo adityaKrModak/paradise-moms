@@ -216,11 +216,11 @@ export default function Testimonials() {
                   <div className="mb-8">
                     <blockquote className="text-gray-700 leading-relaxed text-base">
                       <p className="italic">
-                        "{truncateText(review.comment, 140)}"
+                        "{truncateText(review.comment || "", 140)}"
                       </p>
                     </blockquote>
 
-                    {review.comment.length > 140 && (
+                    {review.comment?.length && review.comment.length > 140 && (
                       <Dialog>
                         <DialogTrigger asChild>
                           <Button
@@ -237,7 +237,7 @@ export default function Testimonials() {
                             <DialogTitle className="flex items-center gap-3">
                               <Avatar className="h-12 w-12">
                                 <AvatarImage
-                                  src={undefined || "/placeholder.svg"}
+                                  src={undefined}
                                   alt={`${review.user.firstName} ${review.user.lastName}`}
                                 />
                                 <AvatarFallback className="bg-green-100 text-green-700 font-semibold">
