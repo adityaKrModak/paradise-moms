@@ -618,44 +618,42 @@ export default function CheckoutPage() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="mt-6">
-                    <h4 className="font-semibold mb-2">Selected Address:</h4>
-                    {addressForReview ? (
-                      (() => {
-                        const {
-                          fullName,
-                          street,
-                          city,
-                          state,
-                          zip,
-                          country,
-                          phoneNumber,
-                          addressType,
-                        } = addressForReview as GraphQLAddressType;
-                        return (
-                          <div>
-                            <p className="font-semibold">{fullName}</p>
-                            <p>
-                              {street}, {city}
+                  <h4 className="font-semibold mb-2">Selected Address:</h4>
+                  {addressForReview ? (
+                    (() => {
+                      const {
+                        fullName,
+                        street,
+                        city,
+                        state,
+                        zip,
+                        country,
+                        phoneNumber,
+                        addressType,
+                      } = addressForReview as GraphQLAddressType;
+                      return (
+                        <div>
+                          <p className="font-semibold">{fullName}</p>
+                          <p>
+                            {street}, {city}
+                          </p>
+                          <p>
+                            {state}, {zip}, {country}
+                          </p>
+                          {phoneNumber && (
+                            <p className="text-sm text-gray-500">
+                              Phone: {phoneNumber}
                             </p>
-                            <p>
-                              {state}, {zip}, {country}
-                            </p>
-                            {phoneNumber && (
-                              <p className="text-sm text-gray-500">
-                                Phone: {phoneNumber}
-                              </p>
-                            )}
-                            <p className="text-xs text-gray-400">
-                              Type: {addressType}
-                            </p>
-                          </div>
-                        );
-                      })()
-                    ) : (
-                      <p>No address selected.</p>
-                    )}
-                  </div>
+                          )}
+                          <p className="text-xs text-gray-400">
+                            Type: {addressType}
+                          </p>
+                        </div>
+                      );
+                    })()
+                  ) : (
+                    <p>No address selected.</p>
+                  )}
                 </CardContent>
               </Card>
             )}
