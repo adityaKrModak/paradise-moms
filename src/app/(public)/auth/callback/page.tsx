@@ -26,7 +26,7 @@ const AuthCallbackPage = () => {
       // Handle cases where no token is provided
       router.push("/signin");
     }
-  }, []); // Run only once on component mount
+  }, [dispatch, router, searchParams]); // Run only once on component mount
 
   return (
     <div className="flex items-center justify-center min-h-screen">

@@ -143,7 +143,7 @@ function Navbar() {
                         My Profile
                       </Link>
                       <Link
-                        href="/orders"
+                        href="/profile/?tab=orders"
                         className="flex items-center px-3 py-2 text-gray-700 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
                         onClick={() => setIsOpen(false)}
                       >
@@ -151,7 +151,7 @@ function Navbar() {
                         My Orders
                       </Link>
                       <Link
-                        href="/settings"
+                        href="/profile/?tab=settings"
                         className="flex items-center px-3 py-2 text-gray-700 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors"
                         onClick={() => setIsOpen(false)}
                       >
@@ -351,13 +351,19 @@ function Navbar() {
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/orders" className="flex items-center">
+                        <Link
+                          href="/profile/?tab=orders"
+                          className="flex items-center"
+                        >
                           <Package className="h-4 w-4 mr-2" />
                           My Orders
                         </Link>
                       </DropdownMenuItem>
                       <DropdownMenuItem asChild>
-                        <Link href="/settings" className="flex items-center">
+                        <Link
+                          href="/profile/?tab=settings"
+                          className="flex items-center"
+                        >
                           <Settings className="h-4 w-4 mr-2" />
                           Settings
                         </Link>

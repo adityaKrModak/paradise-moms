@@ -4,13 +4,13 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { loginStart, loginSuccess, logout } from "@/redux/slices/authSlice";
 import { useLazyQuery } from "@apollo/client";
-import { GET_ME } from "@/graphql/queries/user";
+import { ME_QUERY } from "@/graphql/queries/user";
 import { User } from "@/graphql/generated/graphql";
 
 const AuthInitializer = () => {
   const dispatch = useDispatch();
 
-  const [getMe, { error }] = useLazyQuery<{ me: User }>(GET_ME, {
+  const [getMe, { error }] = useLazyQuery<{ me: User }>(ME_QUERY, {
     onCompleted: (data) => {
       if (data && data.me) {
         dispatch(loginSuccess(data.me));
