@@ -29,6 +29,8 @@ import {
   Heart,
   CreditCard,
 } from "lucide-react";
+import { useSearchParams, usePathname, useRouter } from "next/navigation";
+import OrdersPageContent from "@/components/profile/OrdersPageContent";
 
 export default function ProfilePage() {
   const { data, loading, error } = useMeQuery();
@@ -46,6 +48,17 @@ export default function ProfilePage() {
   ] = useUpdateAddressMutation({
     refetchQueries: ["Me"],
   });
+
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const activeTab = searchParams.get("tab") || "personal";
+
+  const handleTabChange = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("tab", value);
+    router.replace(`${pathname}?${params.toString()}`);
+  };
 
   const [isEditing, setIsEditing] = useState(false);
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -128,7 +141,7 @@ export default function ProfilePage() {
               Profile Not Found
             </h3>
             <p className="text-gray-600 text-sm">
-              We couldn't find your profile information.
+              We couldn&apos;t find your profile information.
             </p>
           </CardContent>
         </Card>
@@ -291,7 +304,11 @@ export default function ProfilePage() {
 
           {/* Main Content */}
           <div className="lg:col-span-2">
-            <Tabs defaultValue="personal" className="space-y-6">
+            <Tabs
+              value={activeTab}
+              onValueChange={handleTabChange}
+              className="space-y-6"
+            >
               <TabsList className="grid w-full grid-cols-3 bg-green-50">
                 <TabsTrigger
                   value="personal"
@@ -546,28 +563,7 @@ export default function ProfilePage() {
 
               {/* Order History Tab */}
               <TabsContent value="orders">
-                <Card className="border-green-100 shadow-sm">
-                  <CardHeader>
-                    <CardTitle className="text-green-800 flex items-center gap-2">
-                      <Package className="h-5 w-5" />
-                      Recent Orders
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-center py-12">
-                      <Package className="h-16 w-16 text-gray-300 mx-auto mb-4" />
-                      <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                        Order History
-                      </h3>
-                      <p className="text-gray-600 mb-4">
-                        Your order history will appear here
-                      </p>
-                      <Button className="bg-green-600 hover:bg-green-700 text-white">
-                        Browse Products
-                      </Button>
-                    </div>
-                  </CardContent>
-                </Card>
+                <OrdersPageContent />
               </TabsContent>
 
               {/* Settings Tab */}

@@ -2,6 +2,7 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateItemQuantity, removeItem } from "@/redux/slices/cartSlice";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,20 +20,27 @@ import {
   Truck,
   Shield,
   CreditCard,
+  Loader2,
 } from "lucide-react";
 import {
   selectCartItems,
   selectCartTotal,
 } from "@/redux/selectors/cartSelectors";
 import type { CartItem } from "@/redux/slices/cartSlice";
+import { useCartValidation } from "@/hooks/useCartValidation";
 
 export default function CartPageContent() {
+  const router = useRouter();
   const dispatch = useDispatch();
   const items: CartItem[] = useSelector(selectCartItems);
   const subtotal: number = useSelector(selectCartTotal);
-  const shipping = subtotal > 50 ? 0 : 5.99;
-  const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const total = subtotal;
+
+  const { isValidating } = useCartValidation(items);
+
+  const handleProceedToCheckout = () => {
+    router.push("/checkout");
+  };
 
   const handleUpdateQuantity = (id: number, quantity: number) => {
     if (quantity > 0) {
@@ -44,10 +52,6 @@ export default function CartPageContent() {
 
   const handleRemoveItem = (id: number) => {
     dispatch(removeItem(id));
-  };
-
-  const formatPrice = (price: number) => {
-    return `₹${price.toFixed(2)}`;
   };
 
   if (items.length === 0) {
@@ -129,6 +133,8 @@ export default function CartPageContent() {
                               src={
                                 item.imageUrls[0]?.url ||
                                 "/placeholder.svg?height=60&width=60&query=product" ||
+                                "/placeholder.svg" ||
+                                "/placeholder.svg" ||
                                 "/placeholder.svg"
                               }
                               alt={item.name}
@@ -217,6 +223,8 @@ export default function CartPageContent() {
                             src={
                               item.imageUrls[0]?.url ||
                               "/placeholder.svg?height=80&width=80&query=product" ||
+                              "/placeholder.svg" ||
+                              "/placeholder.svg" ||
                               "/placeholder.svg"
                             }
                             alt={item.name}
@@ -300,7 +308,6 @@ export default function CartPageContent() {
 
           {/* Order Summary */}
           <div className="space-y-6">
-            {/* Summary Card */}
             <Card className="border-green-100 sticky top-4">
               <CardHeader>
                 <CardTitle className="text-green-800">Order Summary</CardTitle>
@@ -309,41 +316,45 @@ export default function CartPageContent() {
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-600">Subtotal</span>
-                    <span className="font-medium">₹{subtotal.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Shipping</span>
                     <span className="font-medium">
-                      {shipping === 0 ? (
-                        <span className="text-green-600">Free</span>
-                      ) : (
-                        `₹${shipping.toFixed(2)}`
-                      )}
+                      ₹{(subtotal / 100).toFixed(2)}
                     </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-600">Tax</span>
-                    <span className="font-medium">₹{tax.toFixed(2)}</span>
                   </div>
                   <Separator />
                   <div className="flex justify-between text-lg font-bold">
                     <span>Total</span>
-                    <span className="text-green-600">₹{total.toFixed(2)}</span>
+                    <span className="text-green-600">
+                      ₹{(total / 100).toFixed(2)}
+                    </span>
                   </div>
                 </div>
 
-                {subtotal < 50 && (
-                  <div className="bg-orange-50 border border-orange-200 rounded-lg p-3">
+                {subtotal / 100 < 50 && (
+                  <div className="bg-orange-50 border-orange-200 rounded-lg p-3">
                     <p className="text-sm text-orange-700">
                       <Truck className="h-4 w-4 inline mr-1" />
-                      Add ₹{(50 - subtotal).toFixed(2)} more for free shipping!
+                      Add ₹{(50 - subtotal / 100).toFixed(2)} more for free
+                      shipping!
                     </p>
                   </div>
                 )}
 
-                <Button className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg">
-                  <CreditCard className="h-5 w-5 mr-2" />
-                  Proceed to Checkout
+                <Button
+                  onClick={handleProceedToCheckout}
+                  disabled={isValidating}
+                  className="w-full bg-green-600 hover:bg-green-700 text-white h-12 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {isValidating ? (
+                    <>
+                      <Loader2 className="h-5 w-5 mr-2 animate-spin" />
+                      Validating Items...
+                    </>
+                  ) : (
+                    <>
+                      <CreditCard className="h-5 w-5 mr-2" />
+                      Proceed to Checkout
+                    </>
+                  )}
                 </Button>
 
                 <div className="flex items-center justify-center gap-2 text-sm text-gray-600">
@@ -378,12 +389,6 @@ export default function CartPageContent() {
             <Card className="border-green-100">
               <CardContent className="p-4">
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-sm">
-                    <Truck className="h-4 w-4 text-green-600" />
-                    <span className="text-gray-700">
-                      Free shipping on orders over $50
-                    </span>
-                  </div>
                   <div className="flex items-center gap-3 text-sm">
                     <Shield className="h-4 w-4 text-green-600" />
                     <span className="text-gray-700">

@@ -105,8 +105,8 @@ export default function Footer() {
             </div>
             <p className="text-green-200 text-sm leading-relaxed mb-6">
               Your trusted partner for fresh, organic, and locally sourced
-              products. We're committed to bringing the best quality food to
-              your family's table.
+              products. We&apos;re committed to bringing the best quality food to
+              your family&apos;s table.
             </p>
 
             {/* Contact Info */}
