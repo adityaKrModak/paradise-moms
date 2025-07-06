@@ -13,21 +13,7 @@ export const GET_USERS = gql`
   }
 `;
 
-export const GET_MY_ORDERS = gql`
-  query GetMyOrders {
-    me {
-      orders {
-        id
-        totalPrice
-        status
-        createdAt
-        orderItems {
-          id
-        }
-      }
-    }
-  }
-`;
+
 
 export const ME_QUERY = gql`
   query Me {
@@ -50,15 +36,7 @@ export const ME_QUERY = gql`
         country
         addressType
       }
-      orders {
-        id
-        status
-        totalPrice
-        createdAt
-        orderItems {
-          id
-        }
-      }
+      
     }
   }
 `;

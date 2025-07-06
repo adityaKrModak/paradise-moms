@@ -258,46 +258,21 @@ export default function CheckoutPage() {
       currency: "INR",
     };
 
-    const loadingToastId = toast.loading("Placing your order...");
-
+    setIsLoading(true);
     try {
-      const { data: orderData, errors } = await createOrder({
+      const { data: orderData } = await createOrder({
         variables: { createOrderInput },
       });
-
-      toast.dismiss(loadingToastId);
-
-      if (errors) {
-        console.error("GraphQL errors placing order:", errors);
-        toast.error("Failed to place order.", {
-          description: errors.map((e) => e.message).join(", "),
-        });
-        return;
-      }
-
-      if (orderData?.createOrder?.id) {
-        toast.success("Order placed successfully!", {
-          description: `Order ID: ${orderData.createOrder.id}. Redirecting...`,
-        });
+      if (orderData?.createOrder) {
+        toast.success("Order placed successfully!");
         dispatch(clearCart());
         router.push(`/checkout/success?orderId=${orderData.createOrder.id}`);
-      } else {
-        throw new Error("Order creation failed or no order ID returned.");
       }
     } catch (error) {
-      toast.dismiss(loadingToastId);
-      console.error("Error placing order:", error);
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "An unexpected error occurred.";
-      toast.error("Failed to place order.", {
-        description: errorMessage,
-        action: {
-          label: "Try Again",
-          onClick: () => handlePlaceOrder(),
-        },
-      });
+      console.error("Failed to place order:", error);
+      toast.error("Failed to place order. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   };
 
