@@ -28,11 +28,6 @@ export default function CheckoutSuccessPage() {
     email: "sarah@example.com",
   };
 
-  useEffect(() => {
-    // Clear cart after successful order
-    // dispatch(clearCart());
-  }, [dispatch]);
-
   return (
     <div className="min-h-screen bg-gray-50">
       <main className="pt-[140px] md:pt-[140px]">
@@ -127,8 +122,8 @@ export default function CheckoutSuccessPage() {
                         Order Confirmation
                       </h4>
                       <p className="text-sm text-gray-600">
-                        You&apos;ll receive an email confirmation with your order
-                        details and tracking information.
+                        You&apos;ll receive an email confirmation with your
+                        order details and tracking information.
                       </p>
                     </div>
                   </div>
