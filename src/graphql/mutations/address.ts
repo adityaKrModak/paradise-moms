@@ -4,6 +4,8 @@ export const ADD_ADDRESS = gql`
   mutation AddAddress($createAddressInput: CreateAddressInput!) {
     addAddress(createAddressInput: $createAddressInput) {
       id
+      fullName
+      phoneNumber
       street
       city
       state
@@ -17,6 +19,8 @@ export const UPDATE_ADDRESS = gql`
   mutation UpdateAddress($updateAddressInput: UpdateAddressInput!) {
     updateAddress(updateAddressInput: $updateAddressInput) {
       id
+      fullName
+      phoneNumber
       street
       city
       state

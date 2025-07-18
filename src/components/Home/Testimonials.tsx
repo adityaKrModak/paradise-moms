@@ -216,7 +216,7 @@ export default function Testimonials() {
                   <div className="mb-8">
                     <blockquote className="text-gray-700 leading-relaxed text-base">
                       <p className="italic">
-                        "{truncateText(review.comment || "", 140)}"
+                        &quot;{truncateText(review.comment || "", 140)}&quot;
                       </p>
                     </blockquote>
 
@@ -259,7 +259,7 @@ export default function Testimonials() {
                           </DialogHeader>
                           <div className="mt-6">
                             <blockquote className="text-gray-700 leading-relaxed text-lg italic border-l-4 border-green-200 pl-6">
-                              "{review.comment}"
+                              &quot;{review.comment}&quot;
                             </blockquote>
                             <div className="mt-6 pt-6 border-t border-gray-100">
                               <div className="flex items-center justify-between text-sm text-gray-500">
