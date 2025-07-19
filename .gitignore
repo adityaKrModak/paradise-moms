@@ -36,5 +36,4 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-/src/graphql/generated/graphql.tsx
 

@@ -38,7 +38,7 @@ function Banners() {
             Special <span className="text-gradient">Offers</span>
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Don't miss out on our exclusive deals and seasonal offers
+            Don&apos;t miss out on our exclusive deals and seasonal offers
           </p>
         </div>
 

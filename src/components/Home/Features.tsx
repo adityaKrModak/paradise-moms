@@ -26,7 +26,7 @@ import {
   type GetProductsQuery,
   type GetCategoriesQuery,
 } from "@/graphql/generated/graphql";
-import { ProductCard } from "@/components/common/Productcard";
+import { ProductCard } from "@/components/Common/ProductCard";
 
 type Product = GetProductsQuery["products"][0];
 type Category = GetCategoriesQuery["categories"][0];
@@ -233,7 +233,7 @@ export default function Features() {
               Oops! Something went wrong
             </h3>
             <p className="text-red-600 mb-4">
-              We couldn't load our amazing products right now.
+              We couldn&apos;t load our amazing products right now.
             </p>
             <Button
               onClick={() => window.location.reload()}

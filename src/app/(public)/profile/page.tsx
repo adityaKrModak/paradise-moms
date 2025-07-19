@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import {
   useMeQuery,
   useUpdateUserMutation,
@@ -30,9 +30,9 @@ import {
   CreditCard,
 } from "lucide-react";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
-import OrdersPageContent from "@/components/profile/OrdersPageContent";
+import OrdersPageContent from "@/components/Profile/OrdersPageContent";
 
-export default function ProfilePage() {
+const ProfilePageContent = () => {
   const { data, loading, error } = useMeQuery();
   const [updateUser, { loading: updateUserLoading, error: updateUserError }] =
     useUpdateUserMutation({
@@ -279,7 +279,7 @@ export default function ProfilePage() {
                       })}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
+                  {/* <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <Package className="h-4 w-4 text-green-600" />
                       Total Orders
@@ -287,7 +287,7 @@ export default function ProfilePage() {
                     <span className="text-sm font-medium text-green-700">
                       {user.orders?.length ?? 0}
                     </span>
-                  </div>
+                  </div> */}
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2 text-sm text-gray-600">
                       <Heart className="h-4 w-4 text-orange-500" />
@@ -599,5 +599,13 @@ export default function ProfilePage() {
         </div>
       </div>
     </div>
+  );
+};
+
+export default function ProfilePage() {
+  return (
+    <Suspense>
+      <ProfilePageContent />
+    </Suspense>
   );
 }

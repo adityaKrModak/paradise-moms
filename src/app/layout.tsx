@@ -3,7 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ApolloProviders } from "./providers";
 import StoreProvider from "@/redux/StoreProvider";
-import AuthInitializer from "@/components/auth/AuthInitializer";
+import AuthInitializer from "@/components/Auth/AuthInitializer";
 
 const poppins = Poppins({
   subsets: ["latin"],

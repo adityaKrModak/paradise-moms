@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import { ShoppingCart } from "lucide-react";
 
-const CartPage = dynamic(() => import("@/components/cart/CartPageContent"), {
+const CartPage = dynamic(() => import("@/components/Cart/CartPageContent"), {
   ssr: false,
   loading: () => (
     <div className="min-h-screen bg-gray-50 flex items-center justify-center">

@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { loginStart } from "@/redux/slices/authSlice";
 
-const AuthCallbackPage = () => {
+const AuthCallbackContent = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dispatch = useDispatch();
@@ -32,6 +32,14 @@ const AuthCallbackPage = () => {
     <div className="flex items-center justify-center min-h-screen">
       <p className="text-lg">Finalizing authentication, please wait...</p>
     </div>
+  );
+};
+
+const AuthCallbackPage = () => {
+  return (
+    <Suspense>
+      <AuthCallbackContent />
+    </Suspense>
   );
 };
 
