@@ -18,7 +18,7 @@ function Navlinks() {
       <Link href="/shop">
         <div
           className={
-            pathname === "/shop" ? "text-[#00B207] " : "cursor-pointer"
+            pathname === "/products" ? "text-[#00B207] " : "cursor-pointer"
           }
         >
           Shop

@@ -37,8 +37,12 @@ import {
   Edit,
   Save,
   ArrowLeft,
+  Upload,
+  Images,
 } from "lucide-react";
 import Image from "next/image";
+import ImageUpload from "@/components/Admin/ImageUpload";
+import BulkImageUpload from "@/components/Admin/BulkImageUpload";
 
 function isNotNull<T>(value: T | null): value is T {
   return value !== null;
@@ -64,6 +68,70 @@ export default function ProductsPage() {
   const [stock, setStock] = useState("");
   const [categoryIds, setCategoryIds] = useState<number[]>([]);
   const [imageUrls, setImageUrls] = useState([{ url: "", rank: 1 }]);
+  const [uploadedImages, setUploadedImages] = useState<any[]>([]);
+  const [activeUploadTab, setActiveUploadTab] = useState("single");
+
+  // Handler to sync uploaded images with manual URLs
+  const handleImagesUploaded = (images: any[]) => {
+    setUploadedImages(images);
+
+    if (images.length === 0) {
+      // If no uploaded images, keep only manual URLs (non-Cloudinary URLs)
+      const manualUrls = imageUrls.filter(
+        (url) =>
+          url.url.trim() !== "" &&
+          !url.url.includes("cloudinary.com") &&
+          !url.url.includes("res.cloudinary.com")
+      );
+
+      // If no manual URLs either, reset to default empty URL
+      if (manualUrls.length === 0) {
+        setImageUrls([{ url: "", rank: 1 }]);
+      } else {
+        // Re-rank manual URLs and add empty input
+        const rerankedManualUrls = manualUrls.map((url, index) => ({
+          ...url,
+          rank: index + 1,
+        }));
+        setImageUrls([
+          ...rerankedManualUrls,
+          { url: "", rank: rerankedManualUrls.length + 1 },
+        ]);
+      }
+      return;
+    }
+
+    // Convert uploaded images to URL format for the manual section
+    const urlsFromUploaded = images.map((img, index) => ({
+      url: img.optimizedUrls?.medium || img.originalUrl,
+      rank: index + 1,
+    }));
+
+    // Keep existing manual URLs that are not from Cloudinary
+    const existingManualUrls = imageUrls.filter(
+      (url) =>
+        url.url.trim() !== "" &&
+        !url.url.includes("cloudinary.com") &&
+        !url.url.includes("res.cloudinary.com")
+    );
+
+    // Combine uploaded URLs with existing manual URLs
+    const combinedUrls = [
+      ...urlsFromUploaded,
+      ...existingManualUrls.map((url, index) => ({
+        ...url,
+        rank: urlsFromUploaded.length + index + 1,
+      })),
+    ];
+
+    // Add one empty URL input at the end
+    const finalUrls = [
+      ...combinedUrls,
+      { url: "", rank: combinedUrls.length + 1 },
+    ];
+
+    setImageUrls(finalUrls);
+  };
 
   // Edit state
   const [isEditing, setIsEditing] = useState(false);
@@ -89,12 +157,15 @@ export default function ProductsPage() {
     field: "url" | "rank",
     value: string
   ) => {
-    const newImageUrls = [...imageUrls];
-    if (field === "rank") {
-      newImageUrls[index][field] = Number.parseInt(value) || 1;
-    } else {
-      newImageUrls[index][field] = value;
-    }
+    const newImageUrls = imageUrls.map((img, i) => {
+      if (i === index) {
+        return {
+          ...img,
+          [field]: field === "rank" ? Number.parseInt(value) || 1 : value,
+        };
+      }
+      return img;
+    });
     setImageUrls(newImageUrls);
   };
 
@@ -123,6 +194,7 @@ export default function ProductsPage() {
     setStock("");
     setCategoryIds([]);
     setImageUrls([{ url: "", rank: 1 }]);
+    setUploadedImages([]);
     setCurrency("INR");
     setIsEditing(false);
     setEditingProductId(null);
@@ -140,6 +212,38 @@ export default function ProductsPage() {
     setImageUrls(
       product.imageUrls.length > 0 ? product.imageUrls : [{ url: "", rank: 1 }]
     );
+
+    // Convert existing image URLs to UploadedImage format for display
+    const existingImages = product.imageUrls.map((img, index) => {
+      // Extract file extension from URL for better format detection
+      const urlParts = img.url.split(".");
+      const extension = urlParts[urlParts.length - 1]?.toLowerCase() || "jpg";
+      const format = ["jpg", "jpeg", "png", "webp", "gif"].includes(extension)
+        ? extension
+        : "jpg";
+
+      return {
+        publicId: `existing-${index}`,
+        originalUrl: img.url,
+        optimizedUrls: {
+          original: img.url,
+          thumbnail: img.url,
+          medium: img.url,
+          large: img.url,
+          webp: img.url,
+          avif: img.url,
+        },
+        metadata: {
+          width: 800, // Default reasonable width
+          height: 600, // Default reasonable height
+          format: format,
+          bytes: 150000, // Default ~150KB
+          folder: "existing",
+        },
+      };
+    });
+    setUploadedImages(existingImages);
+
     setIsEditing(true);
     setEditingProductId(product.id);
     setActiveTab("add"); // Switch to the form tab
@@ -157,11 +261,22 @@ export default function ProductsPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Create a clean version of imageUrls without the __typename field
-      const cleanedImageUrls = imageUrls.map(({ url, rank }) => ({
-        url,
-        rank,
-      }));
+      // Use uploaded images from Cloudinary if available, otherwise fall back to manual URLs
+      let finalImageUrls;
+      if (uploadedImages.length > 0) {
+        finalImageUrls = uploadedImages.map((img, index) => ({
+          url: img.optimizedUrls?.medium || img.originalUrl,
+          rank: index + 1,
+        }));
+      } else {
+        // Fallback to manual image URLs for backward compatibility
+        finalImageUrls = imageUrls
+          .filter((img) => img.url.trim() !== "")
+          .map(({ url, rank }) => ({
+            url,
+            rank,
+          }));
+      }
 
       const productData = {
         name,
@@ -170,7 +285,7 @@ export default function ProductsPage() {
         currency,
         stock: Number.parseInt(stock),
         categoryIds,
-        imageUrls: cleanedImageUrls,
+        imageUrls: finalImageUrls,
       };
 
       if (isEditing && editingProductId) {
@@ -416,55 +531,104 @@ export default function ProductsPage() {
                   </div>
                 </div>
 
-                {/* Images */}
-                <div className="space-y-3">
-                  <Label className="text-sm font-medium text-gray-700 flex items-center gap-2">
-                    <ImageIcon className="h-4 w-4 text-green-600" />
+                {/* Image Upload Section */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-medium text-gray-700">
                     Product Images
                   </Label>
-                  {imageUrls.map((image, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <Input
-                        type="text"
-                        placeholder="Image URL"
-                        value={image.url}
-                        onChange={(e) =>
-                          handleImageChange(index, "url", e.target.value)
-                        }
-                        className="border-green-200 flex-grow focus:border-green-500 focus:ring-green-500"
-                      />
-                      <Input
-                        type="number"
-                        placeholder="Rank"
-                        value={image.rank}
-                        onChange={(e) =>
-                          handleImageChange(index, "rank", e.target.value)
-                        }
-                        className="border-green-200 w-20 focus:border-green-500 focus:ring-green-500"
-                        min="1"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => removeImage(index)}
-                        disabled={imageUrls.length <= 1}
-                        className="text-red-600 hover:bg-red-50"
-                      >
-                        <X className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  ))}
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="sm"
-                    onClick={addImage}
-                    className="border-green-300 text-green-700 hover:bg-green-50"
+
+                  <Tabs
+                    value={activeUploadTab}
+                    onValueChange={setActiveUploadTab}
                   >
-                    <Plus className="h-4 w-4 mr-2" />
-                    Add another image
-                  </Button>
+                    <TabsList className="bg-green-50">
+                      <TabsTrigger
+                        value="single"
+                        className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+                      >
+                        <Upload className="h-4 w-4 mr-2" />
+                        Single Upload
+                      </TabsTrigger>
+                      <TabsTrigger
+                        value="bulk"
+                        className="data-[state=active]:bg-green-600 data-[state=active]:text-white"
+                      >
+                        <Images className="h-4 w-4 mr-2" />
+                        Bulk Upload
+                      </TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="single" className="mt-4">
+                      <ImageUpload
+                        onImagesUploaded={handleImagesUploaded}
+                        category="product"
+                        maxFiles={10}
+                        existingImages={uploadedImages}
+                      />
+                    </TabsContent>
+
+                    <TabsContent value="bulk" className="mt-4">
+                      <BulkImageUpload
+                        onImagesUploaded={handleImagesUploaded}
+                        category="product"
+                        maxFiles={10}
+                      />
+                    </TabsContent>
+                  </Tabs>
+
+                  {/* Fallback Manual URL Input */}
+                  <div className="mt-6 p-4 bg-gray-50 rounded-lg">
+                    <Label className="text-sm font-medium text-gray-700 mb-3 block">
+                      Manual Image URLs (Fallback)
+                    </Label>
+                    <p className="text-xs text-gray-500 mb-3">
+                      Use this section only if you need to add images via direct
+                      URLs
+                    </p>
+                    {imageUrls.map((image, index) => (
+                      <div key={index} className="flex items-center gap-2 mb-2">
+                        <Input
+                          type="text"
+                          placeholder="Image URL"
+                          value={image.url}
+                          onChange={(e) =>
+                            handleImageChange(index, "url", e.target.value)
+                          }
+                          className="border-gray-200 flex-grow focus:border-green-500 focus:ring-green-500"
+                        />
+                        <Input
+                          type="number"
+                          placeholder="Rank"
+                          value={image.rank}
+                          onChange={(e) =>
+                            handleImageChange(index, "rank", e.target.value)
+                          }
+                          className="border-gray-200 w-20 focus:border-green-500 focus:ring-green-500"
+                          min="1"
+                        />
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeImage(index)}
+                          disabled={imageUrls.length <= 1}
+                          className="text-red-600 hover:bg-red-50"
+                        >
+                          <X className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    ))}
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={addImage}
+                      className="border-gray-300 text-gray-700 hover:bg-gray-50"
+                    >
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add manual URL
+                    </Button>
+                  </div>
                 </div>
 
                 {/* Submit */}
