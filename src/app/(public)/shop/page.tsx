@@ -4,7 +4,7 @@ import shopBanner from "@/assets/shapBanner.svg";
 import Categoryfilters from "@/components/Shop/Categoryfilters";
 import Pricefilter from "@/components/Shop/Pricefilter";
 import Ratingfilter from "@/components/Shop/Ratingfilter";
-import { ProductCard } from "@/components/Common/ProductCard";
+import ProductCard from "@/components/Common/ProductCard";
 import { useGetProductsQuery } from "@/graphql/generated/graphql";
 
 export default function ShopPage() {

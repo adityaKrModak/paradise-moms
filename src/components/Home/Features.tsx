@@ -26,7 +26,7 @@ import {
   type GetProductsQuery,
   type GetCategoriesQuery,
 } from "@/graphql/generated/graphql";
-import { ProductCard } from "@/components/Common/ProductCard";
+import ProductCard from "@/components/Common/ProductCard";
 
 type Product = GetProductsQuery["products"][0];
 type Category = GetCategoriesQuery["categories"][0];
