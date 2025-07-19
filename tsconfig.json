@@ -17,12 +17,14 @@
         "name": "next"
       }
     ],
+    // Add baseUrl, which is required for path aliases to work reliably
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
-      "@/redux/*": ["./redux/*"]
+      // This single alias is all you need for the src directory
+      "@/*": ["./src/*"]
     }
   },
+  // This is the CORRECT include array that will fix your build
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
   "exclude": ["node_modules"]
 }
