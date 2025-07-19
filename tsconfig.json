@@ -21,7 +21,8 @@
     "baseUrl": ".",
     "paths": {
       // This single alias is all you need for the src directory
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@/redux/*": ["./redux/*"]
     }
   },
   // This is the CORRECT include array that will fix your build
