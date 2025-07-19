@@ -1,9 +1,9 @@
-import type { CodegenConfig } from '@graphql-codegen/cli';
-import dotenv from 'dotenv';
+// import type { CodegenConfig } from '@graphql-codegen/cli';
+import dotenv from "dotenv";
 
 // Load environment variables
 dotenv.config();
-const config: CodegenConfig = {
+const config = {
   overwrite: true,
   schema: process.env.NEXT_PUBLIC_API_URL + "/graphql",
   documents: [
