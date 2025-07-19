@@ -31,7 +31,7 @@ interface ProductCardProps {
   product: Product;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+ function ProductCard({ product }: ProductCardProps) {
   const dispatch = useDispatch();
   const isItemInStore = useSelector((state: RootState) =>
     state.cart.items.some((item) => item.id === product.id)
@@ -316,3 +316,4 @@ export function ProductCard({ product }: ProductCardProps) {
     </Card>
   );
 }
+export default ProductCard
