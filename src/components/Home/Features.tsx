@@ -397,7 +397,7 @@ export default function Features() {
         </div>
 
         {/* Category Filter */}
-        <div className="flex justify-center items-center mb-12">
+        {/* <div className="flex justify-center items-center mb-12">
           <div className="bg-white rounded-2xl p-2 shadow-lg border border-green-100 flex flex-wrap gap-2 max-w-4xl">
             <button
               onClick={() => handleSelectedItem("All")}
@@ -423,7 +423,7 @@ export default function Features() {
               </button>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* Products Container */}
         <div className="relative">
