@@ -18,8 +18,12 @@ export default function AboutPage() {
               key={i}
               className="absolute"
               initial={{
-                x: Math.random() * window.innerWidth,
-                y: window.innerHeight + 100,
+                x:
+                  Math.random() *
+                  (typeof window !== "undefined" ? window.innerWidth : 1200),
+                y:
+                  (typeof window !== "undefined" ? window.innerHeight : 800) +
+                  100,
                 rotate: 0,
                 opacity: 0.7,
               }}

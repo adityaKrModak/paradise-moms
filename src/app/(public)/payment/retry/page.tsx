@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,7 +21,7 @@ declare global {
   }
 }
 
-export default function RetryPaymentPage() {
+function RetryPaymentContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { data: meData } = useMeQuery();
@@ -276,5 +276,13 @@ export default function RetryPaymentPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function RetryPaymentPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <RetryPaymentContent />
+    </Suspense>
   );
 }

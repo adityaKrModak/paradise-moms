@@ -8,7 +8,13 @@ export const wishlistPersistenceMiddleware: Middleware<{}, RootState> =
     const result = next(action);
 
     // Save to localStorage after any wishlist action
-    if (action.type?.startsWith("wishlist/")) {
+    if (
+      typeof action === "object" &&
+      action !== null &&
+      "type" in action &&
+      typeof action.type === "string" &&
+      action.type.startsWith("wishlist/")
+    ) {
       const state = store.getState();
       saveWishlistToStorage(state.wishlist);
     }
