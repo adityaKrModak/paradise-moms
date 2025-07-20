@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/Common/ProductCard";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -18,6 +19,7 @@ type Product = GetProductsQuery["products"][0];
 type Category = GetCategoriesQuery["categories"][0];
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -37,6 +39,20 @@ export default function ProductsPage() {
     loading: categoriesLoading,
     error: categoriesError,
   } = useGetCategoriesQuery();
+
+  // Handle URL parameters
+  useEffect(() => {
+    const urlSearch = searchParams.get("search");
+    const urlCategory = searchParams.get("category");
+
+    if (urlSearch) {
+      setSearchQuery(urlSearch);
+    }
+
+    if (urlCategory) {
+      setSelectedCategories([urlCategory]);
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     if (productsData?.products) {

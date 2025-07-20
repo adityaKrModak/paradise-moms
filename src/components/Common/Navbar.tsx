@@ -24,7 +24,6 @@ import {
   Settings,
   User,
   UserCircle,
-  X,
   Leaf,
   Heart,
   MapPin,
@@ -44,6 +43,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar } from "@radix-ui/react-avatar";
 import { AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useApolloClient } from "@apollo/client";
+import { useGetCategoriesQuery } from "@/graphql/generated/graphql";
 import dynamic from "next/dynamic";
 
 const CartBadge = dynamic(() => import("./CartBadge"), { ssr: false });
@@ -57,25 +57,30 @@ const navigationLinks = [
   { href: "/about", label: "About Us", icon: UserCircle },
 ];
 
-const categories = [
-  "Fresh Vegetables",
-  "Organic Fruits",
-  "Dairy & Eggs",
-  "Bakery Items",
-  "Pantry Essentials",
-];
-
 function Navbar() {
   const router = useRouter();
   const dispatch = useDispatch();
   const { isAuthenticated, user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
   const client = useApolloClient();
+
+  // Fetch categories from GraphQL
+  const { data: categoriesData } = useGetCategoriesQuery();
+  const categories =
+    categoriesData?.categories?.filter((cat) => cat !== null) || [];
 
   const handleLogout = () => {
     dispatch(logout());
     localStorage.removeItem("accessToken");
     client.resetStore();
+  };
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   return (
@@ -97,23 +102,13 @@ function Navbar() {
             </SheetTrigger>
             <SheetContent side="left" className="w-80 p-0 bg-white">
               <SheetHeader className="p-6 bg-gradient-to-r from-green-600 to-green-700">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                      <Leaf className="w-6 h-6 text-white" />
-                    </div>
-                    <span className="text-xl font-bold text-white">
-                      Paradise Moms
-                    </span>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                    <Leaf className="w-6 h-6 text-white" />
                   </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    onClick={() => setIsOpen(false)}
-                    className="text-white hover:bg-white/20"
-                  >
-                    <X className="h-5 w-5" />
-                  </Button>
+                  <span className="text-xl font-bold text-white">
+                    Paradise Moms
+                  </span>
                 </div>
               </SheetHeader>
 
@@ -206,15 +201,15 @@ function Navbar() {
                       </h3>
                       {categories.map((category) => (
                         <Link
-                          key={category}
-                          href={`/category/${category
-                            .toLowerCase()
-                            .replace(/\s+/g, "-")}`}
+                          key={category.id}
+                          href={`/products?category=${encodeURIComponent(
+                            category.name
+                          )}`}
                           className="flex items-center px-4 py-2 text-gray-600 hover:text-green-700 hover:bg-green-50 rounded-xl transition-all duration-200"
                           onClick={() => setIsOpen(false)}
                         >
                           <Leaf className="h-4 w-4 mr-3 text-green-500" />
-                          {category}
+                          {category.name}
                         </Link>
                       ))}
                     </div>
@@ -299,14 +294,16 @@ function Navbar() {
 
         {/* Mobile Search Bar */}
         <div className="px-4 pb-3">
-          <div className="relative">
+          <form onSubmit={handleSearch} className="relative">
             <Input
               type="search"
               placeholder="Search organic products..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-10 pr-4 py-2 border-green-200 rounded-2xl bg-green-50/70 focus:bg-white focus:border-green-400"
             />
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-          </div>
+          </form>
         </div>
       </div>
 
@@ -355,14 +352,16 @@ function Navbar() {
 
               {/* Desktop Search */}
               <div className="flex-1 max-w-xl mx-8">
-                <div className="relative">
+                <form onSubmit={handleSearch} className="relative">
                   <Input
                     type="search"
                     placeholder="Search for organic products..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
                     className="pl-12 h-12 border-green-200 focus:border-green-500 focus:ring-green-500 rounded-xl bg-green-50/50"
                   />
                   <Search className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-green-500" />
-                </div>
+                </form>
               </div>
 
               {/* Desktop Actions */}
