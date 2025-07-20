@@ -488,7 +488,8 @@ export type SyncPaymentStatusResponse = {
   __typename?: 'SyncPaymentStatusResponse';
   currentStatus: Scalars['String']['output'];
   error?: Maybe<Scalars['String']['output']>;
-  payment: Payment;
+  gatewayPaymentId?: Maybe<Scalars['String']['output']>;
+  payment?: Maybe<Payment>;
   previousStatus: Scalars['String']['output'];
   statusChanged: Scalars['Boolean']['output'];
 };
@@ -589,6 +590,23 @@ export type UpdateAddressMutationVariables = Exact<{
 
 export type UpdateAddressMutation = { __typename?: 'Mutation', updateAddress: { __typename?: 'Address', id: number, fullName: string, phoneNumber?: string | null, street: string, city: string, state: string, zip: string, country: string } };
 
+export type UpdateOrderMutationVariables = Exact<{
+  updateOrderInput: UpdateOrderInput;
+}>;
+
+
+export type UpdateOrderMutation = { __typename?: 'Mutation', updateOrder: { __typename?: 'Order', id: number, status: OrderStatus, totalPrice: number, currency: string, createdAt: any, updatedAt: any, orderItems?: Array<{ __typename?: 'OrderItem', id: number, quantity: number, price: number, product: { __typename?: 'Product', id: number, name: string } }> | null } };
+
+export type SyncAllPendingPaymentsMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SyncAllPendingPaymentsMutation = { __typename?: 'Mutation', syncAllPendingPayments: { __typename?: 'BulkSyncPaymentsResponse', totalPayments: number, successfulSyncs: number, failedSyncs: number, syncResults: Array<{ __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment?: { __typename?: 'Payment', id: string, status: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', order: { __typename?: 'Order', id: number, status: OrderStatus } } } | null }> } };
+
+export type GetAllOrdersAdminQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAllOrdersAdminQuery = { __typename?: 'Query', orders: Array<{ __typename?: 'Order', id: number, totalPrice: number, status: OrderStatus, currency: string, createdAt: any, updatedAt: any, user: { __typename?: 'User', id: number, firstName: string, lastName?: string | null, email: string }, orderItems?: Array<{ __typename?: 'OrderItem', id: number, quantity: number, price: number, currency: string, product: { __typename?: 'Product', id: number, name: string, description: string, imageUrls: Array<{ __typename?: 'ProductImage', url: string, rank: number }> } }> | null }> };
+
 export type CreateCategoryMutationVariables = Exact<{
   createCategoryInput: CreateCategoryInput;
 }>;
@@ -629,14 +647,14 @@ export type SyncPaymentStatusByGatewayIdMutationVariables = Exact<{
 }>;
 
 
-export type SyncPaymentStatusByGatewayIdMutation = { __typename?: 'Mutation', syncPaymentStatusByGatewayId: { __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment: { __typename?: 'Payment', id: string, status: string, amount: number, currency: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', id: string, status: string, order: { __typename?: 'Order', id: number, status: OrderStatus } } } } };
+export type SyncPaymentStatusByGatewayIdMutation = { __typename?: 'Mutation', syncPaymentStatusByGatewayId: { __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment?: { __typename?: 'Payment', id: string, status: string, amount: number, currency: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', id: string, status: string, order: { __typename?: 'Order', id: number, status: OrderStatus } } } | null } };
 
 export type SyncOrderPaymentsStatusMutationVariables = Exact<{
   orderId: Scalars['Int']['input'];
 }>;
 
 
-export type SyncOrderPaymentsStatusMutation = { __typename?: 'Mutation', syncOrderPaymentsStatus: { __typename?: 'SyncOrderPaymentsStatusResponse', orderId: number, totalPayments: number, syncResults: Array<{ __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment: { __typename?: 'Payment', id: string, status: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', order: { __typename?: 'Order', id: number, status: OrderStatus } } } }> } };
+export type SyncOrderPaymentsStatusMutation = { __typename?: 'Mutation', syncOrderPaymentsStatus: { __typename?: 'SyncOrderPaymentsStatusResponse', orderId: number, totalPayments: number, syncResults: Array<{ __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment?: { __typename?: 'Payment', id: string, status: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', order: { __typename?: 'Order', id: number, status: OrderStatus } } } | null }> } };
 
 export type CreateProductMutationVariables = Exact<{
   createProductInput: CreateProductInput;
@@ -819,6 +837,169 @@ export function useUpdateAddressMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateAddressMutationHookResult = ReturnType<typeof useUpdateAddressMutation>;
 export type UpdateAddressMutationResult = Apollo.MutationResult<UpdateAddressMutation>;
 export type UpdateAddressMutationOptions = Apollo.BaseMutationOptions<UpdateAddressMutation, UpdateAddressMutationVariables>;
+export const UpdateOrderDocument = gql`
+    mutation UpdateOrder($updateOrderInput: UpdateOrderInput!) {
+  updateOrder(updateOrderInput: $updateOrderInput) {
+    id
+    status
+    totalPrice
+    currency
+    createdAt
+    updatedAt
+    orderItems {
+      id
+      quantity
+      price
+      product {
+        id
+        name
+      }
+    }
+  }
+}
+    `;
+export type UpdateOrderMutationFn = Apollo.MutationFunction<UpdateOrderMutation, UpdateOrderMutationVariables>;
+
+/**
+ * __useUpdateOrderMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderMutation, { data, loading, error }] = useUpdateOrderMutation({
+ *   variables: {
+ *      updateOrderInput: // value for 'updateOrderInput'
+ *   },
+ * });
+ */
+export function useUpdateOrderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderMutation, UpdateOrderMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument, options);
+      }
+export type UpdateOrderMutationHookResult = ReturnType<typeof useUpdateOrderMutation>;
+export type UpdateOrderMutationResult = Apollo.MutationResult<UpdateOrderMutation>;
+export type UpdateOrderMutationOptions = Apollo.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
+export const SyncAllPendingPaymentsDocument = gql`
+    mutation SyncAllPendingPayments {
+  syncAllPendingPayments {
+    totalPayments
+    successfulSyncs
+    failedSyncs
+    syncResults {
+      payment {
+        id
+        status
+        gatewayPaymentId
+        intent {
+          order {
+            id
+            status
+          }
+        }
+      }
+      statusChanged
+      previousStatus
+      currentStatus
+      error
+    }
+  }
+}
+    `;
+export type SyncAllPendingPaymentsMutationFn = Apollo.MutationFunction<SyncAllPendingPaymentsMutation, SyncAllPendingPaymentsMutationVariables>;
+
+/**
+ * __useSyncAllPendingPaymentsMutation__
+ *
+ * To run a mutation, you first call `useSyncAllPendingPaymentsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSyncAllPendingPaymentsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [syncAllPendingPaymentsMutation, { data, loading, error }] = useSyncAllPendingPaymentsMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSyncAllPendingPaymentsMutation(baseOptions?: Apollo.MutationHookOptions<SyncAllPendingPaymentsMutation, SyncAllPendingPaymentsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SyncAllPendingPaymentsMutation, SyncAllPendingPaymentsMutationVariables>(SyncAllPendingPaymentsDocument, options);
+      }
+export type SyncAllPendingPaymentsMutationHookResult = ReturnType<typeof useSyncAllPendingPaymentsMutation>;
+export type SyncAllPendingPaymentsMutationResult = Apollo.MutationResult<SyncAllPendingPaymentsMutation>;
+export type SyncAllPendingPaymentsMutationOptions = Apollo.BaseMutationOptions<SyncAllPendingPaymentsMutation, SyncAllPendingPaymentsMutationVariables>;
+export const GetAllOrdersAdminDocument = gql`
+    query GetAllOrdersAdmin {
+  orders {
+    id
+    totalPrice
+    status
+    currency
+    createdAt
+    updatedAt
+    user {
+      id
+      firstName
+      lastName
+      email
+    }
+    orderItems {
+      id
+      quantity
+      price
+      currency
+      product {
+        id
+        name
+        description
+        imageUrls {
+          url
+          rank
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAllOrdersAdminQuery__
+ *
+ * To run a query within a React component, call `useGetAllOrdersAdminQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAllOrdersAdminQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAllOrdersAdminQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetAllOrdersAdminQuery(baseOptions?: Apollo.QueryHookOptions<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>(GetAllOrdersAdminDocument, options);
+      }
+export function useGetAllOrdersAdminLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>(GetAllOrdersAdminDocument, options);
+        }
+export function useGetAllOrdersAdminSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>(GetAllOrdersAdminDocument, options);
+        }
+export type GetAllOrdersAdminQueryHookResult = ReturnType<typeof useGetAllOrdersAdminQuery>;
+export type GetAllOrdersAdminLazyQueryHookResult = ReturnType<typeof useGetAllOrdersAdminLazyQuery>;
+export type GetAllOrdersAdminSuspenseQueryHookResult = ReturnType<typeof useGetAllOrdersAdminSuspenseQuery>;
+export type GetAllOrdersAdminQueryResult = Apollo.QueryResult<GetAllOrdersAdminQuery, GetAllOrdersAdminQueryVariables>;
 export const CreateCategoryDocument = gql`
     mutation CreateCategory($createCategoryInput: CreateCategoryInput!) {
   createCategory(createCategoryInput: $createCategoryInput) {

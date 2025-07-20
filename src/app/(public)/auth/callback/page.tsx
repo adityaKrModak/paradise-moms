@@ -17,8 +17,10 @@ const AuthCallbackContent = () => {
       // Store the token in localStorage
       localStorage.setItem("accessToken", token);
 
-      // Dispatch loginStart to trigger the getMe query in AuthInitializer
-      dispatch(loginStart());
+      // Small delay to ensure token is stored, then dispatch loginStart
+      setTimeout(() => {
+        dispatch(loginStart());
+      }, 100);
 
       // Redirect to the homepage
       router.push("/");
@@ -26,7 +28,7 @@ const AuthCallbackContent = () => {
       // Handle cases where no token is provided
       router.push("/signin");
     }
-  }, [dispatch, router, searchParams]); // Run only once on component mount
+  }, [dispatch, router, searchParams]);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
