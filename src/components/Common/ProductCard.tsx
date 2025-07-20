@@ -1,5 +1,6 @@
 "use client";
 import Image from "next/image";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, removeItem } from "@/redux/slices/cartSlice";
 import type { GetProductsQuery } from "@/graphql/generated/graphql";
 import type { RootState } from "@/redux/rootReducer";
-import { Heart, ShoppingCart, Leaf } from "lucide-react";
+import { Heart, ShoppingCart, Leaf, ImageIcon } from "lucide-react";
 import { useWishlist, useIsInWishlist } from "@/hooks/useWishlist";
 
 type Product = GetProductsQuery["products"][0];
@@ -19,6 +20,9 @@ interface ProductCardProps {
 function ProductCard({ product }: ProductCardProps) {
   const dispatch = useDispatch();
   const { toggleItem } = useWishlist();
+  const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
+
   const isItemInStore = useSelector((state: RootState) =>
     state.cart.items.some((item) => item.id === product.id)
   );
@@ -40,25 +44,60 @@ function ProductCard({ product }: ProductCardProps) {
     toggleItem(product);
   };
 
+  const handleImageLoad = () => {
+    setImageLoading(false);
+  };
+
+  const handleImageError = () => {
+    setImageLoading(false);
+    setImageError(true);
+  };
+
   const price = product.price / 100;
 
   return (
     <Card className="group w-full max-w-sm mx-auto bg-white rounded-2xl shadow-sm border border-green-100 hover:shadow-xl hover:-translate-y-2 transition-all duration-300 overflow-hidden">
       {/* Image Container */}
-      <div className="relative overflow-hidden bg-gradient-to-br from-green-50 to-orange-50">
-        <Image
-          src={
-            product.imageUrls[0]?.url ||
-            "/placeholder.svg?height=240&width=300&query=organic+product"
-          }
-          alt={product.name}
-          width={300}
-          height={240}
-          className="w-full h-48 md:h-56 object-cover group-hover:scale-110 transition-transform duration-500"
-        />
+      <div className="relative overflow-hidden bg-gradient-to-br from-green-50 to-orange-50 h-48 md:h-56">
+        {/* Loading Skeleton */}
+        {imageLoading && (
+          <div className="absolute inset-0 bg-gray-200 animate-pulse flex items-center justify-center">
+            <ImageIcon className="w-12 h-12 text-gray-400" />
+          </div>
+        )}
+
+        {/* Error State */}
+        {imageError && (
+          <div className="absolute inset-0 bg-gray-100 flex flex-col items-center justify-center">
+            <ImageIcon className="w-12 h-12 text-gray-400 mb-2" />
+            <span className="text-xs text-gray-500">Image not available</span>
+          </div>
+        )}
+
+        {/* Actual Image */}
+        {!imageError && (
+          <Image
+            src={
+              product.imageUrls[0]?.url ||
+              "/placeholder.svg?height=240&width=300&query=organic+product"
+            }
+            alt={product.name}
+            width={300}
+            height={240}
+            loading="lazy"
+            priority={false}
+            onLoad={handleImageLoad}
+            onError={handleImageError}
+            className={`w-full h-full object-cover group-hover:scale-110 transition-all duration-500 ${
+              imageLoading ? "opacity-0" : "opacity-100"
+            }`}
+            placeholder="blur"
+            blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCdABmX/9k="
+          />
+        )}
 
         {/* Organic Badge */}
-        <div className="absolute top-3 left-3">
+        <div className="absolute top-3 left-3 z-10">
           <Badge className="bg-green-600 text-white border-0 shadow-lg">
             <Leaf className="w-3 h-3 mr-1" />
             Organic
@@ -68,7 +107,7 @@ function ProductCard({ product }: ProductCardProps) {
         {/* Wishlist Button */}
         <button
           onClick={handleWishlistToggle}
-          className="absolute top-3 right-3 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-all duration-200 group/heart"
+          className="absolute top-3 right-3 z-10 w-10 h-10 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg hover:bg-white transition-all duration-200 group/heart"
         >
           <Heart
             className={`w-5 h-5 transition-all duration-200 ${
