@@ -47,9 +47,11 @@ import { useApolloClient } from "@apollo/client";
 import dynamic from "next/dynamic";
 
 const CartBadge = dynamic(() => import("./CartBadge"), { ssr: false });
+const WishlistBadge = dynamic(() => import("./WishlistBadge"), { ssr: false });
 
 const navigationLinks = [
   { href: "/products", label: "All Products", icon: Package },
+  { href: "/wishlist", label: "Wishlist", icon: Heart },
   { href: "/offers", label: "Special Offers", icon: Heart },
   { href: "/recipes", label: "Recipes", icon: Leaf },
   { href: "/about", label: "About Us", icon: UserCircle },
@@ -223,7 +225,7 @@ function Navbar() {
                 <div className="mt-auto p-6 border-t border-green-100 bg-green-50">
                   <div className="flex items-center justify-center text-sm text-gray-600 mb-4">
                     <Phone className="h-4 w-4 mr-2 text-green-600" />
-                    +1 (234) 567-890
+                    +91 9031955563
                   </div>
                   <div className="flex items-center justify-center text-xs text-gray-500">
                     <MapPin className="h-3 w-3 mr-1" />
@@ -259,6 +261,22 @@ function Navbar() {
                 <span className="sr-only">Sign In</span>
               </Button>
             )}
+
+            {/* Mobile Wishlist Button */}
+            <div className="relative">
+              <Link href="/wishlist">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="text-green-700 hover:bg-green-50"
+                >
+                  <Heart className="h-6 w-6" />
+                </Button>
+              </Link>
+              <WishlistBadge />
+            </div>
+
+            {/* Mobile Cart Button */}
             <div className="relative">
               <Link href="/cart">
                 <Button
@@ -301,7 +319,7 @@ function Navbar() {
               <div className="flex items-center gap-6">
                 <div className="flex items-center gap-2">
                   <Phone className="h-4 w-4" />
-                  <span>+1 (234) 567-890</span>
+                  <span>+91 9031955563</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <MapPin className="h-4 w-4" />
@@ -310,7 +328,7 @@ function Navbar() {
               </div>
               <div className="flex items-center gap-4">
                 <span>🌱 100% Organic Certified</span>
-                <span>🚚 Same Day Delivery</span>
+                <span>🚚 Prime Delivery</span>
               </div>
             </div>
           </div>
@@ -438,6 +456,21 @@ function Navbar() {
                   className="h-8 bg-green-200"
                 />
 
+                {/* Wishlist Button */}
+                <div className="relative">
+                  <Link href="/wishlist">
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="text-green-700 hover:bg-green-50 w-12 h-12 rounded-xl"
+                    >
+                      <Heart className="w-6 h-6" />
+                    </Button>
+                  </Link>
+                  <WishlistBadge />
+                </div>
+
+                {/* Cart Button */}
                 <div className="relative">
                   <Link href="/cart">
                     <Button
@@ -466,7 +499,7 @@ function Navbar() {
             <div className="flex items-center justify-between py-3">
               {/* Categories Dropdown */}
               <div className="flex items-center space-x-8">
-                <DropdownMenu>
+                {/* <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
@@ -492,7 +525,7 @@ function Navbar() {
                       </DropdownMenuItem>
                     ))}
                   </DropdownMenuContent>
-                </DropdownMenu>
+                </DropdownMenu> */}
 
                 {/* Desktop Navigation Links */}
                 <nav className="flex items-center space-x-8">
@@ -512,7 +545,7 @@ function Navbar() {
               {/* Contact Info */}
               <div className="flex items-center text-sm text-gray-600 bg-white/80 px-4 py-2 rounded-xl">
                 <Heart className="h-4 w-4 mr-2 text-orange-500" />
-                <span className="font-medium">Trusted by 10,000+ families</span>
+                <span className="font-medium">Trusted by 500+ families</span>
               </div>
             </div>
           </div>

@@ -95,7 +95,7 @@ const features = [
 ];
 
 const stats = [
-  { icon: Users, value: "10,000+", label: "Happy Customers", color: "green" },
+  { icon: Users, value: "500+", label: "Happy Customers", color: "green" },
   { icon: Award, value: "500+", label: "Organic Products", color: "orange" },
   { icon: Truck, value: "50+", label: "Cities Served", color: "green" },
   { icon: Leaf, value: "100%", label: "Organic Certified", color: "orange" },

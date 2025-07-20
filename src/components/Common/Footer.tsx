@@ -82,7 +82,7 @@ const features = [
   {
     icon: Heart,
     title: "Family Trusted",
-    description: "Loved by 10,000+ families",
+    description: "Loved by 500+ families",
   },
 ];
 
@@ -169,10 +169,10 @@ export default function Footer() {
                   <Phone className="h-4 w-4 text-orange-400" />
                 </div>
                 <Link
-                  href="tel:2264654577"
+                  href="tel:+919031955563"
                   className="text-green-200 hover:text-white transition-colors"
                 >
-                  (226) 465-4577
+                  +91 9031955563
                 </Link>
               </div>
               <div className="flex items-center gap-3 text-sm">
@@ -180,10 +180,10 @@ export default function Footer() {
                   <Mail className="h-4 w-4 text-orange-400" />
                 </div>
                 <Link
-                  href="mailto:Paradisemoms@gmail.com"
+                  href="mailto:paradisemoms2020@gmail.com"
                   className="text-green-200 hover:text-white transition-colors"
                 >
-                  Paradisemoms@gmail.com
+                  paradisemoms2020@gmail.com
                 </Link>
               </div>
               <div className="flex items-start gap-3 text-sm">
@@ -191,7 +191,7 @@ export default function Footer() {
                   <MapPin className="h-4 w-4 text-orange-400" />
                 </div>
                 <span className="text-green-200">
-                  123 Fresh Market St, Organic Valley, ON M5V 3A8
+                  Hno.-174A, Yaduvansh Nagar, Chas, Bokaro, 827013
                 </span>
               </div>
             </div>

@@ -9,8 +9,8 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-green-50 to-white">
       {/* Hero Section with Background Animation */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Animated Background Elements */}
+      {/* Main Content Sections */}
+      <div className="max-w-7xl mx-auto px-6 py-20">
         <div className="absolute inset-0">
           {/* Floating Leaves Animation */}
           {[...Array(20)].map((_, i) => (
@@ -42,74 +42,6 @@ export default function AboutPage() {
           {/* Gradient Overlay */}
           <div className="absolute inset-0 bg-gradient-to-br from-green-100/30 via-transparent to-orange-100/20" />
         </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-          >
-            <h1 className="text-6xl md:text-8xl font-bold text-green-800 mb-6">
-              Our{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-orange-500">
-                Story
-              </span>
-            </h1>
-
-            <motion.p
-              className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto leading-relaxed"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 1 }}
-            >
-              Some background animation story about Paradise Moms - where
-              tradition meets innovation, and every product tells a story of
-              nature's bounty.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 1, duration: 0.8 }}
-              className="flex flex-wrap justify-center gap-6 mb-12"
-            >
-              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg">
-                <Heart className="text-red-500" size={24} />
-                <span className="font-semibold text-gray-800">
-                  Made with Love
-                </span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg">
-                <Leaf className="text-green-500" size={24} />
-                <span className="font-semibold text-gray-800">
-                  100% Organic
-                </span>
-              </div>
-              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg">
-                <Users className="text-blue-500" size={24} />
-                <span className="font-semibold text-gray-800">
-                  Family First
-                </span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="w-6 h-10 border-2 border-green-600 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-green-600 rounded-full mt-2"></div>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Main Content Sections */}
-      <div className="max-w-7xl mx-auto px-6 py-20">
         {/* First Content Section - Image Left, Text Right */}
         <motion.section
           className="grid md:grid-cols-2 gap-12 items-center mb-32"

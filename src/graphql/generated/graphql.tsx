@@ -46,6 +46,14 @@ export type AuthAccount = {
   user: User;
 };
 
+export type BulkSyncPaymentsResponse = {
+  __typename?: 'BulkSyncPaymentsResponse';
+  failedSyncs: Scalars['Int']['output'];
+  successfulSyncs: Scalars['Int']['output'];
+  syncResults: Array<SyncPaymentStatusResponse>;
+  totalPayments: Scalars['Int']['output'];
+};
+
 export type Category = {
   __typename?: 'Category';
   description?: Maybe<Scalars['String']['output']>;
@@ -136,6 +144,14 @@ export type Mutation = {
   removePaymentGateway: PaymentGateway;
   removeProduct: Product;
   removeReview: Review;
+  /** Sync all pending payments from Razorpay (Admin only) */
+  syncAllPendingPayments: BulkSyncPaymentsResponse;
+  /** Sync all payment statuses for a specific order from Razorpay */
+  syncOrderPaymentsStatus: SyncOrderPaymentsStatusResponse;
+  /** Sync payment status from Razorpay using Razorpay payment ID */
+  syncPaymentStatusByGatewayId: SyncPaymentStatusResponse;
+  /** Sync payment status from Razorpay using our internal payment ID */
+  syncPaymentStatusFromRazorpay: SyncPaymentStatusResponse;
   updateAddress: Address;
   updateCategory: Category;
   updateOrder: Order;
@@ -210,6 +226,21 @@ export type MutationRemoveProductArgs = {
 
 export type MutationRemoveReviewArgs = {
   id: Scalars['Int']['input'];
+};
+
+
+export type MutationSyncOrderPaymentsStatusArgs = {
+  orderId: Scalars['Int']['input'];
+};
+
+
+export type MutationSyncPaymentStatusByGatewayIdArgs = {
+  gatewayPaymentId: Scalars['String']['input'];
+};
+
+
+export type MutationSyncPaymentStatusFromRazorpayArgs = {
+  paymentId: Scalars['String']['input'];
 };
 
 
@@ -446,6 +477,22 @@ export type Review = {
   user: User;
 };
 
+export type SyncOrderPaymentsStatusResponse = {
+  __typename?: 'SyncOrderPaymentsStatusResponse';
+  orderId: Scalars['Int']['output'];
+  syncResults: Array<SyncPaymentStatusResponse>;
+  totalPayments: Scalars['Int']['output'];
+};
+
+export type SyncPaymentStatusResponse = {
+  __typename?: 'SyncPaymentStatusResponse';
+  currentStatus: Scalars['String']['output'];
+  error?: Maybe<Scalars['String']['output']>;
+  payment: Payment;
+  previousStatus: Scalars['String']['output'];
+  statusChanged: Scalars['Boolean']['output'];
+};
+
 export type UpdateAddressInput = {
   addressType?: InputMaybe<AddressType>;
   city?: InputMaybe<Scalars['String']['input']>;
@@ -570,6 +617,27 @@ export type CreateOrderMutationVariables = Exact<{
 
 export type CreateOrderMutation = { __typename?: 'Mutation', createOrder: { __typename?: 'Order', id: number, totalPrice: number, status: OrderStatus, orderItems?: Array<{ __typename?: 'OrderItem', quantity: number, price: number, product: { __typename?: 'Product', id: number, name: string } }> | null } };
 
+export type CreatePaymentIntentMutationVariables = Exact<{
+  createPaymentIntentInput: CreatePaymentIntentInput;
+}>;
+
+
+export type CreatePaymentIntentMutation = { __typename?: 'Mutation', createPaymentIntent: { __typename?: 'PaymentIntent', id: string, gatewayIntentId: string, status: string, amount: number, currency: string } };
+
+export type SyncPaymentStatusByGatewayIdMutationVariables = Exact<{
+  gatewayPaymentId: Scalars['String']['input'];
+}>;
+
+
+export type SyncPaymentStatusByGatewayIdMutation = { __typename?: 'Mutation', syncPaymentStatusByGatewayId: { __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment: { __typename?: 'Payment', id: string, status: string, amount: number, currency: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', id: string, status: string, order: { __typename?: 'Order', id: number, status: OrderStatus } } } } };
+
+export type SyncOrderPaymentsStatusMutationVariables = Exact<{
+  orderId: Scalars['Int']['input'];
+}>;
+
+
+export type SyncOrderPaymentsStatusMutation = { __typename?: 'Mutation', syncOrderPaymentsStatus: { __typename?: 'SyncOrderPaymentsStatusResponse', orderId: number, totalPayments: number, syncResults: Array<{ __typename?: 'SyncPaymentStatusResponse', statusChanged: boolean, previousStatus: string, currentStatus: string, error?: string | null, payment: { __typename?: 'Payment', id: string, status: string, gatewayPaymentId: string, intent: { __typename?: 'PaymentIntent', order: { __typename?: 'Order', id: number, status: OrderStatus } } } }> } };
+
 export type CreateProductMutationVariables = Exact<{
   createProductInput: CreateProductInput;
 }>;
@@ -629,7 +697,14 @@ export type UpdateUserMutation = { __typename?: 'Mutation', updateUserInput: { _
 export type GetMyOrdersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMyOrdersQuery = { __typename?: 'Query', me: { __typename?: 'User', orders?: Array<{ __typename?: 'Order', id: number, totalPrice: number, status: OrderStatus, createdAt: any, orderItems?: Array<{ __typename?: 'OrderItem', id: number, quantity: number, price: number, product: { __typename?: 'Product', id: number, name: string, imageUrls: Array<{ __typename?: 'ProductImage', url: string }> } }> | null }> | null } };
+export type GetMyOrdersQuery = { __typename?: 'Query', myOrders: Array<{ __typename?: 'Order', id: number, totalPrice: number, status: OrderStatus, currency: string, createdAt: any, updatedAt: any, orderItems?: Array<{ __typename?: 'OrderItem', id: number, quantity: number, price: number, currency: string, product: { __typename?: 'Product', id: number, name: string, description: string, imageUrls: Array<{ __typename?: 'ProductImage', url: string, rank: number }> } }> | null }> };
+
+export type GetPaymentIntentByOrderQueryVariables = Exact<{
+  orderId: Scalars['Int']['input'];
+}>;
+
+
+export type GetPaymentIntentByOrderQuery = { __typename?: 'Query', paymentIntentByOrder: { __typename?: 'PaymentIntent', id: string, status: string, amount: number, currency: string, gatewayIntentId: string, createdAt: any, updatedAt: any, payments?: Array<{ __typename?: 'Payment', id: string, status: string, amount: number, currency: string, gatewayPaymentId: string, createdAt: any }> | null } };
 
 export type GetProductsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -890,6 +965,145 @@ export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const CreatePaymentIntentDocument = gql`
+    mutation CreatePaymentIntent($createPaymentIntentInput: CreatePaymentIntentInput!) {
+  createPaymentIntent(createPaymentIntentInput: $createPaymentIntentInput) {
+    id
+    gatewayIntentId
+    status
+    amount
+    currency
+  }
+}
+    `;
+export type CreatePaymentIntentMutationFn = Apollo.MutationFunction<CreatePaymentIntentMutation, CreatePaymentIntentMutationVariables>;
+
+/**
+ * __useCreatePaymentIntentMutation__
+ *
+ * To run a mutation, you first call `useCreatePaymentIntentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreatePaymentIntentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createPaymentIntentMutation, { data, loading, error }] = useCreatePaymentIntentMutation({
+ *   variables: {
+ *      createPaymentIntentInput: // value for 'createPaymentIntentInput'
+ *   },
+ * });
+ */
+export function useCreatePaymentIntentMutation(baseOptions?: Apollo.MutationHookOptions<CreatePaymentIntentMutation, CreatePaymentIntentMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreatePaymentIntentMutation, CreatePaymentIntentMutationVariables>(CreatePaymentIntentDocument, options);
+      }
+export type CreatePaymentIntentMutationHookResult = ReturnType<typeof useCreatePaymentIntentMutation>;
+export type CreatePaymentIntentMutationResult = Apollo.MutationResult<CreatePaymentIntentMutation>;
+export type CreatePaymentIntentMutationOptions = Apollo.BaseMutationOptions<CreatePaymentIntentMutation, CreatePaymentIntentMutationVariables>;
+export const SyncPaymentStatusByGatewayIdDocument = gql`
+    mutation SyncPaymentStatusByGatewayId($gatewayPaymentId: String!) {
+  syncPaymentStatusByGatewayId(gatewayPaymentId: $gatewayPaymentId) {
+    payment {
+      id
+      status
+      amount
+      currency
+      gatewayPaymentId
+      intent {
+        id
+        status
+        order {
+          id
+          status
+        }
+      }
+    }
+    statusChanged
+    previousStatus
+    currentStatus
+    error
+  }
+}
+    `;
+export type SyncPaymentStatusByGatewayIdMutationFn = Apollo.MutationFunction<SyncPaymentStatusByGatewayIdMutation, SyncPaymentStatusByGatewayIdMutationVariables>;
+
+/**
+ * __useSyncPaymentStatusByGatewayIdMutation__
+ *
+ * To run a mutation, you first call `useSyncPaymentStatusByGatewayIdMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSyncPaymentStatusByGatewayIdMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [syncPaymentStatusByGatewayIdMutation, { data, loading, error }] = useSyncPaymentStatusByGatewayIdMutation({
+ *   variables: {
+ *      gatewayPaymentId: // value for 'gatewayPaymentId'
+ *   },
+ * });
+ */
+export function useSyncPaymentStatusByGatewayIdMutation(baseOptions?: Apollo.MutationHookOptions<SyncPaymentStatusByGatewayIdMutation, SyncPaymentStatusByGatewayIdMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SyncPaymentStatusByGatewayIdMutation, SyncPaymentStatusByGatewayIdMutationVariables>(SyncPaymentStatusByGatewayIdDocument, options);
+      }
+export type SyncPaymentStatusByGatewayIdMutationHookResult = ReturnType<typeof useSyncPaymentStatusByGatewayIdMutation>;
+export type SyncPaymentStatusByGatewayIdMutationResult = Apollo.MutationResult<SyncPaymentStatusByGatewayIdMutation>;
+export type SyncPaymentStatusByGatewayIdMutationOptions = Apollo.BaseMutationOptions<SyncPaymentStatusByGatewayIdMutation, SyncPaymentStatusByGatewayIdMutationVariables>;
+export const SyncOrderPaymentsStatusDocument = gql`
+    mutation SyncOrderPaymentsStatus($orderId: Int!) {
+  syncOrderPaymentsStatus(orderId: $orderId) {
+    orderId
+    totalPayments
+    syncResults {
+      payment {
+        id
+        status
+        gatewayPaymentId
+        intent {
+          order {
+            id
+            status
+          }
+        }
+      }
+      statusChanged
+      previousStatus
+      currentStatus
+      error
+    }
+  }
+}
+    `;
+export type SyncOrderPaymentsStatusMutationFn = Apollo.MutationFunction<SyncOrderPaymentsStatusMutation, SyncOrderPaymentsStatusMutationVariables>;
+
+/**
+ * __useSyncOrderPaymentsStatusMutation__
+ *
+ * To run a mutation, you first call `useSyncOrderPaymentsStatusMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSyncOrderPaymentsStatusMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [syncOrderPaymentsStatusMutation, { data, loading, error }] = useSyncOrderPaymentsStatusMutation({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *   },
+ * });
+ */
+export function useSyncOrderPaymentsStatusMutation(baseOptions?: Apollo.MutationHookOptions<SyncOrderPaymentsStatusMutation, SyncOrderPaymentsStatusMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<SyncOrderPaymentsStatusMutation, SyncOrderPaymentsStatusMutationVariables>(SyncOrderPaymentsStatusDocument, options);
+      }
+export type SyncOrderPaymentsStatusMutationHookResult = ReturnType<typeof useSyncOrderPaymentsStatusMutation>;
+export type SyncOrderPaymentsStatusMutationResult = Apollo.MutationResult<SyncOrderPaymentsStatusMutation>;
+export type SyncOrderPaymentsStatusMutationOptions = Apollo.BaseMutationOptions<SyncOrderPaymentsStatusMutation, SyncOrderPaymentsStatusMutationVariables>;
 export const CreateProductDocument = gql`
     mutation CreateProduct($createProductInput: CreateProductInput!) {
   createProduct(createProductInput: $createProductInput) {
@@ -1203,22 +1417,25 @@ export type UpdateUserMutationResult = Apollo.MutationResult<UpdateUserMutation>
 export type UpdateUserMutationOptions = Apollo.BaseMutationOptions<UpdateUserMutation, UpdateUserMutationVariables>;
 export const GetMyOrdersDocument = gql`
     query GetMyOrders {
-  me {
-    orders {
+  myOrders {
+    id
+    totalPrice
+    status
+    currency
+    createdAt
+    updatedAt
+    orderItems {
       id
-      totalPrice
-      status
-      createdAt
-      orderItems {
+      quantity
+      price
+      currency
+      product {
         id
-        quantity
-        price
-        product {
-          id
-          name
-          imageUrls {
-            url
-          }
+        name
+        description
+        imageUrls {
+          url
+          rank
         }
       }
     }
@@ -1257,6 +1474,60 @@ export type GetMyOrdersQueryHookResult = ReturnType<typeof useGetMyOrdersQuery>;
 export type GetMyOrdersLazyQueryHookResult = ReturnType<typeof useGetMyOrdersLazyQuery>;
 export type GetMyOrdersSuspenseQueryHookResult = ReturnType<typeof useGetMyOrdersSuspenseQuery>;
 export type GetMyOrdersQueryResult = Apollo.QueryResult<GetMyOrdersQuery, GetMyOrdersQueryVariables>;
+export const GetPaymentIntentByOrderDocument = gql`
+    query GetPaymentIntentByOrder($orderId: Int!) {
+  paymentIntentByOrder(orderId: $orderId) {
+    id
+    status
+    amount
+    currency
+    gatewayIntentId
+    createdAt
+    updatedAt
+    payments {
+      id
+      status
+      amount
+      currency
+      gatewayPaymentId
+      createdAt
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetPaymentIntentByOrderQuery__
+ *
+ * To run a query within a React component, call `useGetPaymentIntentByOrderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetPaymentIntentByOrderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetPaymentIntentByOrderQuery({
+ *   variables: {
+ *      orderId: // value for 'orderId'
+ *   },
+ * });
+ */
+export function useGetPaymentIntentByOrderQuery(baseOptions: Apollo.QueryHookOptions<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables> & ({ variables: GetPaymentIntentByOrderQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>(GetPaymentIntentByOrderDocument, options);
+      }
+export function useGetPaymentIntentByOrderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>(GetPaymentIntentByOrderDocument, options);
+        }
+export function useGetPaymentIntentByOrderSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>(GetPaymentIntentByOrderDocument, options);
+        }
+export type GetPaymentIntentByOrderQueryHookResult = ReturnType<typeof useGetPaymentIntentByOrderQuery>;
+export type GetPaymentIntentByOrderLazyQueryHookResult = ReturnType<typeof useGetPaymentIntentByOrderLazyQuery>;
+export type GetPaymentIntentByOrderSuspenseQueryHookResult = ReturnType<typeof useGetPaymentIntentByOrderSuspenseQuery>;
+export type GetPaymentIntentByOrderQueryResult = Apollo.QueryResult<GetPaymentIntentByOrderQuery, GetPaymentIntentByOrderQueryVariables>;
 export const GetProductsDocument = gql`
     query GetProducts {
   products {

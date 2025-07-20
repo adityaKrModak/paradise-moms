@@ -4,6 +4,7 @@ import "./globals.css";
 import { ApolloProviders } from "./providers";
 import StoreProvider from "@/redux/StoreProvider";
 import AuthInitializer from "@/components/Auth/AuthInitializer";
+import WishlistInitializer from "@/components/Wishlist/WishlistInitializer";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -32,6 +33,7 @@ export default function RootLayout({
         <StoreProvider>
           <ApolloProviders>
             <AuthInitializer />
+            <WishlistInitializer />
             {children}
           </ApolloProviders>
         </StoreProvider>

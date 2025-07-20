@@ -1,7 +1,7 @@
 "use client";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -13,38 +13,91 @@ import {
   ArrowRight,
   Home,
   Receipt,
+  Loader2,
 } from "lucide-react";
+import { useMeQuery } from "@/graphql/generated/graphql";
 
 export default function CheckoutSuccessPage() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const { data: meData } = useMeQuery();
 
-  // Mock order details
-  const orderDetails = {
-    orderNumber: "PM-" + Math.random().toString(36).substr(2, 9).toUpperCase(),
-    estimatedDelivery: "2-3 business days",
-    trackingNumber:
-      "TRK" + Math.random().toString(36).substr(2, 12).toUpperCase(),
-    email: "sarah@example.com",
-  };
+  const [orderDetails, setOrderDetails] = useState({
+    orderId: "",
+    paymentId: "",
+    orderNumber: "",
+    estimatedDelivery: "Few business days",
+    // trackingNumber: "",
+    email: "",
+  });
+
+  const [isLoading, setIsLoading] = useState(true);
+  const [orderTime, setOrderTime] = useState("");
+
+  useEffect(() => {
+    const orderId = searchParams.get("orderId");
+    const paymentId = searchParams.get("paymentId");
+
+    if (orderId && paymentId) {
+      const now = new Date();
+      setOrderTime(now.toLocaleString());
+
+      setOrderDetails({
+        orderId,
+        paymentId,
+        orderNumber: `#${orderId}`,
+        estimatedDelivery: "Few business days",
+        // trackingNumber: `TRK${orderId}${Math.random()
+        //   .toString(36)
+        //   .substr(2, 6)
+        //   .toUpperCase()}`,
+        email: meData?.me?.email || "your-email@example.com",
+      });
+      setIsLoading(false);
+    } else {
+      // If no order details, redirect to home after a short delay
+      setTimeout(() => {
+        router.push("/");
+      }, 2000);
+    }
+  }, [searchParams, meData, router]);
+
+  if (isLoading && !orderDetails.orderId) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <Loader2 className="h-12 w-12 animate-spin text-green-600 mx-auto mb-4" />
+          <p className="text-gray-600">Loading your order confirmation...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <main className="pt-[140px] md:pt-[140px]">
+      <main className="">
         <div className="container mx-auto px-4 py-8">
           <div className="max-w-2xl mx-auto">
             {/* Success Header */}
-            <div className="text-center mb-8">
-              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="text-center mb-8 animate-in fade-in-50 duration-700">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4 animate-in zoom-in-50 duration-500 delay-200">
                 <CheckCircle className="h-12 w-12 text-green-600" />
               </div>
-              <h1 className="text-3xl font-bold text-green-800 mb-2">
-                Order Confirmed!
+              <h1 className="text-3xl font-bold text-green-800 mb-2 animate-in slide-in-from-bottom-4 duration-500 delay-300">
+                Order Confirmed! 🎉
               </h1>
-              <p className="text-gray-600">
+              <p className="text-gray-600 animate-in slide-in-from-bottom-4 duration-500 delay-400">
                 Thank you for your purchase. Your order has been successfully
-                placed.
+                placed and will be processed shortly.
               </p>
+              {orderDetails.paymentId && (
+                <div className="mt-4 p-3 bg-green-50 rounded-lg border border-green-200 animate-in slide-in-from-bottom-4 duration-500 delay-500">
+                  <p className="text-sm text-green-700">
+                    <strong>Payment ID:</strong> {orderDetails.paymentId}
+                  </p>
+                </div>
+              )}
             </div>
 
             {/* Order Details */}
@@ -62,12 +115,12 @@ export default function CheckoutSuccessPage() {
                           {orderDetails.orderNumber}
                         </span>
                       </div>
-                      <div className="flex justify-between">
+                      {/* <div className="flex justify-between">
                         <span className="text-gray-600">Tracking Number:</span>
                         <span className="font-medium">
                           {orderDetails.trackingNumber}
                         </span>
-                      </div>
+                      </div> */}
                       <div className="flex justify-between">
                         <span className="text-gray-600">
                           Estimated Delivery:
@@ -85,18 +138,12 @@ export default function CheckoutSuccessPage() {
                     </h3>
                     <div className="space-y-2 text-sm">
                       <div className="flex items-center gap-2 text-green-600">
-                        <Mail className="h-4 w-4" />
-                        <span>
-                          Confirmation email sent to {orderDetails.email}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2 text-green-600">
                         <Package className="h-4 w-4" />
                         <span>Order is being prepared</span>
                       </div>
                       <div className="flex items-center gap-2 text-green-600">
                         <Truck className="h-4 w-4" />
-                        <span>Tracking updates will be sent</span>
+                        <span>Tracking updates will be updated</span>
                       </div>
                     </div>
                   </div>
@@ -122,8 +169,8 @@ export default function CheckoutSuccessPage() {
                         Order Confirmation
                       </h4>
                       <p className="text-sm text-gray-600">
-                        You&apos;ll receive an email confirmation with your
-                        order details and tracking information.
+                        You&apos;ll confirmation with your order details is
+                        being updated in your orders section.
                       </p>
                     </div>
                   </div>
@@ -175,11 +222,11 @@ export default function CheckoutSuccessPage() {
               </Button>
               <Button
                 variant="outline"
-                onClick={() => router.push("/orders")}
+                onClick={() => router.push("/profile")}
                 className="flex-1 border-green-300 text-green-700 hover:bg-green-50"
               >
                 <Receipt className="h-4 w-4 mr-2" />
-                View Order Details
+                View My Profile
               </Button>
             </div>
 
