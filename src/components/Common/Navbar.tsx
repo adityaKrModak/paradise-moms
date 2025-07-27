@@ -60,7 +60,7 @@ const navigationLinks = [
 function Navbar() {
   const router = useRouter();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useAuth();
+  const { isAuthenticated, user, isLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const client = useApolloClient();
@@ -114,7 +114,11 @@ function Navbar() {
 
               <div className="flex flex-col h-full">
                 {/* Mobile User Section */}
-                {isAuthenticated ? (
+                {isLoading ? (
+                  <div className="p-6 border-b border-green-100">
+                    <div className="w-8 h-8 animate-pulse bg-green-200 rounded-full mx-auto"></div>
+                  </div>
+                ) : isAuthenticated ? (
                   <div className="p-6 border-b border-green-100 bg-green-50">
                     <div className="flex items-center gap-4 mb-4">
                       <Avatar className="h-12 w-12">
@@ -366,89 +370,100 @@ function Navbar() {
 
               {/* Desktop Actions */}
               <div className="flex items-center space-x-4">
-                {isAuthenticated ? (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
+                {(() => {
+                  if (isLoading) {
+                    return (
+                      <div className="w-8 h-8 animate-pulse bg-green-200 rounded-full"></div>
+                    );
+                  } else if (isAuthenticated) {
+                    console.log("Rendering profile dropdown");
+                    return (
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button
+                            variant="ghost"
+                            className="flex items-center gap-3 text-green-700 hover:text-green-800 hover:bg-green-50 rounded-xl px-4 py-2"
+                          >
+                            <Avatar className="h-8 w-8">
+                              <AvatarImage alt={user?.firstName} />
+                              <AvatarFallback className="bg-green-600 text-white text-sm">
+                                {user?.firstName
+                                  .split(" ")
+                                  .map((n) => n[0])
+                                  .join("")}
+                              </AvatarFallback>
+                            </Avatar>
+                            <span className="hidden lg:block font-medium">
+                              {user?.firstName.split(" ")[0]}
+                            </span>
+                            <ChevronDown className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent
+                          align="end"
+                          className="w-64 bg-white border-green-100 shadow-xl rounded-xl"
+                        >
+                          <DropdownMenuLabel className="p-4">
+                            <div>
+                              <p className="font-semibold text-gray-800">
+                                {user?.firstName}
+                              </p>
+                              <p className="text-sm text-gray-600 font-normal">
+                                {user?.email}
+                              </p>
+                            </div>
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator className="bg-green-100" />
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/profile"
+                              className="flex items-center p-3 hover:bg-green-50"
+                            >
+                              <UserCircle className="h-4 w-4 mr-3 text-green-600" />
+                              My Profile
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/profile/?tab=orders"
+                              className="flex items-center p-3 hover:bg-green-50"
+                            >
+                              <Package className="h-4 w-4 mr-3 text-green-600" />
+                              My Orders
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link
+                              href="/profile/?tab=settings"
+                              className="flex items-center p-3 hover:bg-green-50"
+                            >
+                              <Settings className="h-4 w-4 mr-3 text-green-600" />
+                              Settings
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator className="bg-green-100" />
+                          <DropdownMenuItem
+                            onClick={handleLogout}
+                            className="text-red-600 focus:text-red-600 focus:bg-red-50 p-3"
+                          >
+                            <LogOut className="h-4 w-4 mr-3" />
+                            Sign Out
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    );
+                  } else {
+                    return (
                       <Button
-                        variant="ghost"
-                        className="flex items-center gap-3 text-green-700 hover:text-green-800 hover:bg-green-50 rounded-xl px-4 py-2"
+                        onClick={() => router.push("/signin")}
+                        className="btn-primary"
                       >
-                        <Avatar className="h-8 w-8">
-                          <AvatarImage alt={user?.firstName} />
-                          <AvatarFallback className="bg-green-600 text-white text-sm">
-                            {user?.firstName
-                              .split(" ")
-                              .map((n) => n[0])
-                              .join("")}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="hidden lg:block font-medium">
-                          {user?.firstName.split(" ")[0]}
-                        </span>
-                        <ChevronDown className="h-4 w-4" />
+                        <LogIn className="h-5 w-5 mr-2" />
+                        Sign In
                       </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent
-                      align="end"
-                      className="w-64 bg-white border-green-100 shadow-xl rounded-xl"
-                    >
-                      <DropdownMenuLabel className="p-4">
-                        <div>
-                          <p className="font-semibold text-gray-800">
-                            {user?.firstName}
-                          </p>
-                          <p className="text-sm text-gray-600 font-normal">
-                            {user?.email}
-                          </p>
-                        </div>
-                      </DropdownMenuLabel>
-                      <DropdownMenuSeparator className="bg-green-100" />
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/profile"
-                          className="flex items-center p-3 hover:bg-green-50"
-                        >
-                          <UserCircle className="h-4 w-4 mr-3 text-green-600" />
-                          My Profile
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/profile/?tab=orders"
-                          className="flex items-center p-3 hover:bg-green-50"
-                        >
-                          <Package className="h-4 w-4 mr-3 text-green-600" />
-                          My Orders
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem asChild>
-                        <Link
-                          href="/profile/?tab=settings"
-                          className="flex items-center p-3 hover:bg-green-50"
-                        >
-                          <Settings className="h-4 w-4 mr-3 text-green-600" />
-                          Settings
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuSeparator className="bg-green-100" />
-                      <DropdownMenuItem
-                        onClick={handleLogout}
-                        className="text-red-600 focus:text-red-600 focus:bg-red-50 p-3"
-                      >
-                        <LogOut className="h-4 w-4 mr-3" />
-                        Sign Out
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                ) : (
-                  <Button
-                    onClick={() => router.push("/signin")}
-                    className="btn-primary"
-                  >
-                    <LogIn className="h-5 w-5 mr-2" />
-                    Sign In
-                  </Button>
-                )}
+                    );
+                  }
+                })()}
 
                 <Separator
                   orientation="vertical"
